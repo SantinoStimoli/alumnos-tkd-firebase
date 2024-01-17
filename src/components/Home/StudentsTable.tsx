@@ -11,9 +11,9 @@ import TableSortLabel from '@mui/material/TableSortLabel'
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
 import { visuallyHidden } from '@mui/utils'
-import { Delete, Edit, EditNote } from '@mui/icons-material'
+import { Add, Delete, EditNote } from '@mui/icons-material'
 import { IconButton, Toolbar, Tooltip, Typography, alpha } from '@mui/material'
-import { deleteStudent, deleteStudents } from '../../services/http'
+import { deleteStudents } from '../../services/http'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -131,8 +131,12 @@ const headCells: readonly HeadCell[] = [
   },
 ]
 
-function EnhancedTableToolbar(props: { selected: string[]; updateStudents: () => void }) {
-  const { selected, updateStudents } = props
+function EnhancedTableToolbar(props: {
+  selected: string[]
+  updateStudents: () => void
+  setForm: React.Dispatch<React.SetStateAction<boolean>>
+}) {
+  const { selected, updateStudents, setForm } = props
   const numSelected = selected.length
 
   return (
@@ -150,9 +154,14 @@ function EnhancedTableToolbar(props: { selected: string[]; updateStudents: () =>
           {numSelected} seleccionado{numSelected > 1 && 's'}
         </Typography>
       ) : (
-        <Typography sx={{ flex: '1 1 100%' }} variant='h6' id='tableTitle' component='div'>
-          Alumnos
-        </Typography>
+        <div className='flex items-center gap-3'>
+          <Typography sx={{ flex: '1 1 100%' }} variant='h6' id='tableTitle' component='div'>
+            Alumnos
+          </Typography>
+          <IconButton onClick={() => setForm(true)}>
+            <Add />
+          </IconButton>
+        </div>
       )}
       {numSelected > 0 && (
         <Tooltip title='Eliminar'>
@@ -171,7 +180,15 @@ function EnhancedTableToolbar(props: { selected: string[]; updateStudents: () =>
   )
 }
 
-const StudentsTable = ({ rows, getStudents }: { rows: Students[]; getStudents: () => void }) => {
+const StudentsTable = ({
+  rows,
+  getStudents,
+  setForm,
+}: {
+  rows: Students[]
+  getStudents: () => void
+  setForm: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
   const [order, setOrder] = React.useState<Order>('asc')
   const [orderBy, setOrderBy] = React.useState<keyof Students>('name')
   const [selected, setSelected] = React.useState<string[]>([])
@@ -227,9 +244,9 @@ const StudentsTable = ({ rows, getStudents }: { rows: Students[]; getStudents: (
     [order, orderBy, page, rowsPerPage, rows],
   )
 
-  const deleteRow = (id: string) => {
-    deleteStudent(id).then(() => updateStudents())
-  }
+  // const deleteRow = (id: string) => {
+  //   deleteStudent(id).then(() => updateStudents())
+  // }
 
   function updateStudents() {
     getStudents()
@@ -239,7 +256,7 @@ const StudentsTable = ({ rows, getStudents }: { rows: Students[]; getStudents: (
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar selected={selected} updateStudents={updateStudents} />
+        <EnhancedTableToolbar selected={selected} updateStudents={updateStudents} setForm={setForm} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
             <EnhancedTableHead

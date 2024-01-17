@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import LogIn from '../pages/LogIn'
 import NotFound from '../pages/NotFound'
 import Home from '../pages/Home'
@@ -27,21 +27,21 @@ const AppRouting = () => {
   return (
     <main className={'' + (isAuth && 'grid-main')}>
       {isAuth && <Sidebar logOut={logOut} />}
-      <BrowserRouter>
+      <HashRouter>
         {isAuth ? (
           <Routes>
-            <Route path='/' element={<Navigate to={'/inicio'} />} />
-            <Route path='/inicio' element={<Home />} />
+            <Route path='/alumnos-tkd/' element={<Navigate to={'/alumnos-tkd/inicio'} />} />
+            <Route path='/alumnos-tkd/inicio' element={<Home />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         ) : (
           <Routes>
-            <Route path='/' element={<LogIn setIsAuth={setIsAuth} />} />
-            <Route path='/inicio' element={<Navigate to={'/'} />} />
+            <Route path='/alumnos-tkd/' element={<LogIn setIsAuth={setIsAuth} />} />
+            <Route path='/alumnos-tkd/inicio' element={<Navigate to={'/alumnos-tkd'} />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         )}
-      </BrowserRouter>
+      </HashRouter>
       {isAuth && <Footer />}
     </main>
   )

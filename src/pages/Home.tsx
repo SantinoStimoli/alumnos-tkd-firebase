@@ -16,10 +16,10 @@ const Home = () => {
 
   return (
     <main className='main-students'>
-      <Modal open={form} onClose={() => setForm(!form)} className='flex justify-center items-center'>
+      <Modal open={form} onClose={() => setForm(false)} className='flex justify-center items-center'>
         <StudentsForm updateStudents={getStudents} />
       </Modal>
-      <StudentsTable rows={rows} getStudents={getStudents} />
+      <StudentsTable rows={rows} getStudents={getStudents} setForm={setForm} />
     </main>
   )
 }
