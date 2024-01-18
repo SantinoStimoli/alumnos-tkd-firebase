@@ -1,27 +1,39 @@
-import React, { Dispatch, FormEvent, SetStateAction, useState } from 'react'
+import React, { Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Button, InputAdornment, Link, TextField } from '@mui/material'
 import { logInFirebase, registerFirebase } from '../../services/credentials'
+import { LoadingContext } from '../../routes/AppRouting'
 
 const LogInForm = ({ setIsAuth }: { setIsAuth: Dispatch<SetStateAction<boolean>> }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [register, setRegister] = useState(false)
 
+  const setLoading = useContext(LoadingContext)
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    if (setLoading) setLoading(true)
     const target = e.target as typeof e.target & {
       mail: { value: string }
       password: { value: string }
     }
 
     if (register) {
-      await registerFirebase(target.mail.value, target.password.value).then(() => {
-        setIsAuth(true)
-      })
+      await registerFirebase(target.mail.value, target.password.value)
+        .then(() => {
+          setIsAuth(true)
+        })
+        .finally(() => {
+          if (setLoading) setLoading(false)
+        })
     } else {
-      await logInFirebase(target.mail.value, target.password.value).then(() => {
-        setIsAuth(true)
-      })
+      await logInFirebase(target.mail.value, target.password.value)
+        .then(() => {
+          setIsAuth(true)
+        })
+        .finally(() => {
+          if (setLoading) setLoading(false)
+        })
     }
   }
 

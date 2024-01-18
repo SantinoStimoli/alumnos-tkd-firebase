@@ -1,6 +1,5 @@
-import { Collapse, Link, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import { formatUrl } from '../../services/services'
 
 const ListElement = ({
   label,

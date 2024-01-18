@@ -14,6 +14,7 @@ import { visuallyHidden } from '@mui/utils'
 import { Add, Delete, EditNote } from '@mui/icons-material'
 import { IconButton, Toolbar, Tooltip, Typography, alpha } from '@mui/material'
 import { deleteStudents } from '../../services/http'
+import { LoadingContext } from '../../routes/AppRouting'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -139,6 +140,19 @@ function EnhancedTableToolbar(props: {
   const { selected, updateStudents, setForm } = props
   const numSelected = selected.length
 
+  const setLoading = React.useContext(LoadingContext)
+
+  const deleteStudentsSelected = () => {
+    if (setLoading) setLoading(true)
+    deleteStudents(selected)
+      .then(() => {
+        updateStudents()
+      })
+      .finally(() => {
+        if (setLoading) setLoading(false)
+      })
+  }
+
   return (
     <Toolbar
       sx={{
@@ -165,13 +179,7 @@ function EnhancedTableToolbar(props: {
       )}
       {numSelected > 0 && (
         <Tooltip title='Eliminar'>
-          <IconButton
-            onClick={() =>
-              deleteStudents(selected).then(() => {
-                updateStudents()
-              })
-            }
-          >
+          <IconButton onClick={deleteStudentsSelected}>
             <Delete />
           </IconButton>
         </Tooltip>

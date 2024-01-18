@@ -2,18 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.grid-main {
-  padding: 10px 0 0;
-}
-
-.grid-main main {
-  padding: 0 10px 0 0;
-}
-
-.grid-main aside {
-  padding: 0 0 0 10px;
-}
-
 ::-webkit-scrollbar {
   width: 12px;
 }
