@@ -12,3 +12,7 @@ export function formatName(name: string): string {
     .map((palabra) => palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase())
     .join(' ')
 }
+
+export function formatUrl(text: string): string {
+  return text.toLowerCase().replace(/\s+/g, '-')
+}

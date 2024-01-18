@@ -11,8 +11,6 @@ const AppRouting = () => {
   const [isAuth, setIsAuth] = useState(false)
 
   useEffect(() => {
-    // console.log(auth.currentUser)
-
     if (auth.currentUser === null) setIsAuth(false)
     else setIsAuth(true)
   }, [location.href])
@@ -30,12 +28,12 @@ const AppRouting = () => {
         {isAuth ? (
           <Routes>
             <Route path='/alumnos-tkd/alumnos' element={<Students />} />
-            <Route path='/*' element={<Navigate to={'/alumnos-tkd/inicio'} />} />
+            <Route path='*' element={<Navigate to={'/alumnos-tkd/alumnos'} />} />
           </Routes>
         ) : (
           <Routes>
             <Route path='/alumnos-tkd/' element={<LogIn setIsAuth={setIsAuth} />} />
-            <Route path='/*' element={<Navigate to={'/alumnos-tkd'} />} />
+            <Route path='*' element={<Navigate to={'/alumnos-tkd'} />} />
           </Routes>
         )}
       </BrowserRouter>

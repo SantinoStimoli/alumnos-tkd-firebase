@@ -1,9 +1,16 @@
 import { CalendarMonth, Home, Logout, PeopleAlt } from '@mui/icons-material'
 import { List, ListSubheader, Paper } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import ListElement from './ListElement'
 
 const Sidebar = ({ logOut }: { logOut: () => void }) => {
+  const listedElements = [
+    { label: 'Inicio', icon: <Home /> },
+    { label: 'Alumnos', icon: <PeopleAlt /> },
+    { label: 'Cuotas', icon: <CalendarMonth /> },
+  ]
+  const [selectedItem, setSelectedItem] = useState('Inicio')
+
   return (
     <aside>
       <Paper>
@@ -17,9 +24,17 @@ const Sidebar = ({ logOut }: { logOut: () => void }) => {
             </ListSubheader>
           }
         >
-          <ListElement label='Inicio' icon={<Home />} />
-          <ListElement label='Alumnos' icon={<PeopleAlt />} />
-          <ListElement label='Cuotas' icon={<CalendarMonth />} />
+          {listedElements.map((e, i) => {
+            return (
+              <ListElement
+                key={i}
+                label={e.label}
+                icon={e.icon}
+                isSelected={e.label === selectedItem}
+                setSelectedItem={setSelectedItem}
+              />
+            )
+          })}
           <ListElement label='Cerrar sesión' icon={<Logout />} action={logOut} />
         </List>
       </Paper>

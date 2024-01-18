@@ -1,25 +1,32 @@
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import React, { useState } from 'react'
+import { Collapse, Link, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import React, { Dispatch, SetStateAction, useState } from 'react'
+import { formatUrl } from '../../services/services'
 
 const ListElement = ({
   label,
   children,
   icon,
   action,
+  isSelected,
+  setSelectedItem,
 }: {
   label: string
   children?: any
   icon?: any
   action?: () => void
+  isSelected?: boolean
+  setSelectedItem?: Dispatch<SetStateAction<string>>
 }) => {
   const [open, setOpen] = useState(true)
-  console.log(label)
 
   return (
     <div>
       <ListItemButton
+        // to={'/alumnos-tkd/' + formatUrl(label)}
+        selected={isSelected}
         onClick={() => {
           action !== undefined && action()
+          if (setSelectedItem) setSelectedItem(label)
           setOpen(!open)
         }}
       >

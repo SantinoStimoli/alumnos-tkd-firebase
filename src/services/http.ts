@@ -2,8 +2,6 @@ import { deleteData, postData } from './credentials'
 import { formatDate, formatName } from './services'
 
 export async function addStudent(target: any) {
-  console.log(target[3].value)
-
   await postData('students', {
     name: formatName(target[0].value),
     lastName: formatName(target[1].value),
