@@ -13,6 +13,7 @@ const ListElement = ({
   action?: () => void
 }) => {
   const [open, setOpen] = useState(true)
+  console.log(label)
 
   return (
     <div>

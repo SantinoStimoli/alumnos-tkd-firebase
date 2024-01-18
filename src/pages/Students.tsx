@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import StudentsTable from '../components/Home/StudentsTable'
+import StudentsTable from '../components/Students/StudentsTable'
 import { getData } from '../services/credentials'
-import StudentsForm from '../components/Home/StudentsForm'
+import StudentsForm from '../components/Students/StudentsForm'
 import { Modal } from '@mui/material'
 
-const Home = () => {
+const Students = () => {
   const [rows, setRows] = useState<Students[]>([])
   const [form, setForm] = useState(false)
 
@@ -24,4 +24,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Students

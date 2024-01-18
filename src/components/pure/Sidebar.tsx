@@ -10,10 +10,10 @@ const Sidebar = ({ logOut }: { logOut: () => void }) => {
         <List
           sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
           component='nav'
-          aria-labelledby='nested-list-subheader'
+          aria-labelledby='MENU'
           subheader={
             <ListSubheader component='div' id='nested-list-subheader'>
-              Nested List Items
+              MENU
             </ListSubheader>
           }
         >
