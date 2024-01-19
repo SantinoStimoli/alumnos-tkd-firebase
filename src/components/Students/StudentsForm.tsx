@@ -1,7 +1,7 @@
 import React, { FormEvent, useContext } from 'react'
 import { Button, FormControl, MenuItem, Paper, Select, SelectChangeEvent, TextField } from '@mui/material'
 import { Graduations } from '../../data/data.ts'
-import { addStudent } from '../../services/http.ts'
+import { addStudent, editStudent } from '../../services/http.ts'
 import { LoadingContext } from '../../routes/AppRouting.tsx'
 import { formatDate } from '../../services/services.ts'
 
@@ -23,14 +23,19 @@ const StudentsForm = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (setLoading) setLoading(true)
+    const target = { ...e.target, graduation }
     if (studentToEdit === undefined) {
-      const target = { ...e.target, graduation }
       addStudent(target)
         .then(() => updateStudents())
         .finally(() => {
           if (setLoading) setLoading(false)
         })
     } else {
+      editStudent(target, studentToEdit.id)
+        .then(() => updateStudents())
+        .finally(() => {
+          if (setLoading) setLoading(false)
+        })
     }
   }
   return (

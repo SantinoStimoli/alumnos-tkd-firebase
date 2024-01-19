@@ -1,4 +1,4 @@
-import { deleteData, postData } from './credentials'
+import { deleteData, postData, putData } from './credentials'
 import { formatDate, formatName } from './services'
 
 export async function addStudent(target: any) {
@@ -17,13 +17,13 @@ export async function deleteStudent(id: string) {
 }
 
 export async function deleteStudents(ids: string[]) {
-  const deletePromises = ids.map(async (id) => {
+  const deleteStudents = ids.map(async (id) => {
     await deleteData('students', id)
   })
 
-  await Promise.all(deletePromises)
+  await Promise.all(deleteStudents)
 }
 
-export async function editStudent(studentEdited: Students, studentId: string) {
-  console.log(studentEdited, studentId)
+export async function editStudent(studentEdited: any, studentId: string) {
+  putData('students', studentId, studentEdited)
 }

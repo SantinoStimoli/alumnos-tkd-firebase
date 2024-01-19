@@ -1,4 +1,4 @@
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { formatUrl } from '../../services/services'
