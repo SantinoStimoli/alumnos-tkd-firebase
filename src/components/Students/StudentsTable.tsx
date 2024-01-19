@@ -11,7 +11,7 @@ import TableSortLabel from '@mui/material/TableSortLabel'
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
 import { visuallyHidden } from '@mui/utils'
-import { Add, Delete, EditNote } from '@mui/icons-material'
+import { Add, ContactEmergency, Delete, EditNote } from '@mui/icons-material'
 import { IconButton, Toolbar, Tooltip, Typography, alpha } from '@mui/material'
 import { deleteStudents } from '../../services/http'
 import { LoadingContext } from '../../routes/AppRouting'
@@ -195,7 +195,7 @@ const StudentsTable = ({
 }: {
   rows: Students[]
   getStudents: () => void
-  setForm: React.Dispatch<React.SetStateAction<boolean>>
+  setForm: React.Dispatch<React.SetStateAction<boolean | Students>>
 }) => {
   const [order, setOrder] = React.useState<Order>('asc')
   const [orderBy, setOrderBy] = React.useState<keyof Students>('name')
@@ -252,10 +252,6 @@ const StudentsTable = ({
     [order, orderBy, page, rowsPerPage, rows],
   )
 
-  // const deleteRow = (id: string) => {
-  //   deleteStudent(id).then(() => updateStudents())
-  // }
-
   function updateStudents() {
     getStudents()
     setSelected([])
@@ -264,7 +260,7 @@ const StudentsTable = ({
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar selected={selected} updateStudents={updateStudents} setForm={setForm} />
+        <EnhancedTableToolbar selected={selected} updateStudents={updateStudents} setForm={() => setForm(true)} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
             <EnhancedTableHead
@@ -310,8 +306,14 @@ const StudentsTable = ({
                     <TableCell>{row.birthDate}</TableCell>
                     <TableCell>{row.startDate}</TableCell>
                     <TableCell>
-                      <Tooltip title='Eliminar alumno' placement='left'>
-                        <EditNote className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors' />
+                      <Tooltip title='Editar alumno'>
+                        <EditNote
+                          onClick={() => setForm(row)}
+                          className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors'
+                        />
+                      </Tooltip>
+                      <Tooltip title='Contactos'>
+                        <ContactEmergency className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors ml-3' />
                       </Tooltip>
                     </TableCell>
                   </TableRow>

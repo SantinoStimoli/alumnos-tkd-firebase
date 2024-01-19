@@ -6,7 +6,7 @@ import { Modal } from '@mui/material'
 
 const Students = () => {
   const [rows, setRows] = useState<Students[]>([])
-  const [form, setForm] = useState(false)
+  const [form, setForm] = useState<Students | boolean>(false)
 
   const getStudents = () => {
     getData('students').then((r: any) => setRows(r))
@@ -16,8 +16,8 @@ const Students = () => {
 
   return (
     <main className='main-students'>
-      <Modal open={form} onClose={() => setForm(false)} className='flex justify-center items-center'>
-        <StudentsForm updateStudents={getStudents} />
+      <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
+        <StudentsForm updateStudents={getStudents} studentToEdit={typeof form !== 'boolean' ? form : undefined} />
       </Modal>
       <StudentsTable rows={rows} getStudents={getStudents} setForm={setForm} />
     </main>

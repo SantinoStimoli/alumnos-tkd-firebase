@@ -1,9 +1,12 @@
-export function formatDate(date: any) {
+export function formatDate(date: string, isToWeb?: boolean) {
   if (date === '' || date === undefined) return '-'
-
-  const [year, month, day] = date.split('-')
-
-  return `${day}/${month}/${year}`
+  if (isToWeb === true) {
+    const [day, month, year] = date.split('/')
+    return `${year}-${month}-${day}`
+  } else {
+    const [year, month, day] = date.split('-')
+    return `${day}/${month}/${year}`
+  }
 }
 
 export function formatName(name: string): string {

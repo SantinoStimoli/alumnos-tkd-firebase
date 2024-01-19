@@ -53,12 +53,13 @@ const AppRouting = () => {
               <Route path='/alumnos-tkd/inicio' element={<h1>INICIO</h1>} />
               <Route path='/alumnos-tkd/alumnos' element={<Students />} />
               <Route path='/alumnos-tkd/cuotas' element={<h1>CUOTAS</h1>} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} />
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/alumnos'} />} />
+              {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} /> */}
             </Routes>
           ) : (
             <Routes>
               <Route path='/alumnos-tkd/' element={<LogIn setIsAuth={setIsAuth} />} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd'} />} />
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/'} />} />
             </Routes>
           )}
 
