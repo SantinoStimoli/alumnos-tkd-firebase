@@ -3,7 +3,7 @@ import { Button, FormControl, MenuItem, Paper, Select, SelectChangeEvent, TextFi
 import { Graduations } from '../../data/data.ts'
 import { addStudent, editStudent } from '../../services/http.ts'
 import { LoadingContext } from '../../routes/AppRouting.tsx'
-import { formatDate } from '../../services/services.ts'
+import { formatDate, formatStudent } from '../../services/services.ts'
 
 const StudentsForm = ({
   studentToEdit,
@@ -12,7 +12,9 @@ const StudentsForm = ({
   studentToEdit?: Students | undefined
   updateStudents: () => void
 }) => {
-  const [graduation, setGraduation] = React.useState(Graduations.WHITE)
+  const studentCondition = studentToEdit !== undefined
+
+  const [graduation, setGraduation] = React.useState(studentCondition ? studentToEdit.graduation : Graduations.WHITE)
 
   const setLoading = useContext(LoadingContext)
 
@@ -24,14 +26,14 @@ const StudentsForm = ({
     e.preventDefault()
     if (setLoading) setLoading(true)
     const target = { ...e.target, graduation }
-    if (studentToEdit === undefined) {
-      addStudent(target)
+    if (studentCondition) {
+      editStudent(formatStudent(target), studentToEdit.id)
         .then(() => updateStudents())
         .finally(() => {
           if (setLoading) setLoading(false)
         })
     } else {
-      editStudent(target, studentToEdit.id)
+      addStudent(formatStudent(target))
         .then(() => updateStudents())
         .finally(() => {
           if (setLoading) setLoading(false)
@@ -43,7 +45,7 @@ const StudentsForm = ({
       <h1 className='text-2xl font-bold mb-3'>Cargar alumno</h1>
       <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
         <TextField
-          defaultValue={studentToEdit !== undefined ? studentToEdit.name : ''}
+          defaultValue={studentCondition ? studentToEdit.name : ''}
           id='name'
           label='Nombre'
           variant='standard'
@@ -51,7 +53,7 @@ const StudentsForm = ({
           required
         />
         <TextField
-          defaultValue={studentToEdit !== undefined ? studentToEdit.lastName : ''}
+          defaultValue={studentCondition ? studentToEdit.lastName : ''}
           id='lastName'
           label='Apellido'
           variant='standard'
@@ -70,7 +72,7 @@ const StudentsForm = ({
           </Select>
         </FormControl>
         <TextField
-          defaultValue={studentToEdit !== undefined ? studentToEdit.phone : ''}
+          defaultValue={studentCondition ? studentToEdit.phone : ''}
           id='phone'
           type='number'
           label='Teléfono'
@@ -78,7 +80,7 @@ const StudentsForm = ({
           InputLabelProps={{ shrink: true }}
         />
         <TextField
-          defaultValue={studentToEdit !== undefined ? formatDate(studentToEdit.birthDate, true) : ''}
+          defaultValue={studentCondition ? formatDate(studentToEdit.birthDate, true) : ''}
           label='Nacimiento'
           id='birthDate'
           type='date'
@@ -86,7 +88,7 @@ const StudentsForm = ({
           InputLabelProps={{ shrink: true }}
         />
         <TextField
-          defaultValue={studentToEdit !== undefined ? formatDate(studentToEdit.startDate, true) : ''}
+          defaultValue={studentCondition ? formatDate(studentToEdit.startDate, true) : ''}
           label='Inicio'
           id='startDate'
           type='date'
@@ -96,7 +98,7 @@ const StudentsForm = ({
 
         <div className='flex flex-col mt-5'>
           <Button type='submit' variant='contained'>
-            Agregar
+            {studentCondition ? 'Confirmar' : 'Añadir'}
           </Button>
         </div>
       </form>

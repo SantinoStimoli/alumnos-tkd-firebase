@@ -297,9 +297,7 @@ const StudentsTable = ({
                       />
                     </TableCell>
 
-                    <TableCell component='th' id={labelId} scope='row' padding='none'>
-                      {row.name}
-                    </TableCell>
+                    <TableCell>{row.name}</TableCell>
                     <TableCell>{row.lastName}</TableCell>
                     <TableCell>{row.graduation}</TableCell>
                     <TableCell>{row.phone}</TableCell>
