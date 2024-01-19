@@ -19,9 +19,8 @@ export function formatName(name: string): string {
 export function formatUrl(text: string): string {
   return text.toLowerCase().replace(/\s+/g, '-')
 }
-export function formatStudent(studentToFormat: any): StudentsForm {
-  console.log(studentToFormat[2].value)
 
+export function formatStudent(studentToFormat: any): StudentsForm {
   return {
     name: formatName(studentToFormat[0].value),
     lastName: formatName(studentToFormat[1].value),
@@ -29,5 +28,13 @@ export function formatStudent(studentToFormat: any): StudentsForm {
     phone: studentToFormat[4].value ?? '-',
     birthDate: formatDate(studentToFormat[5].value),
     startDate: formatDate(studentToFormat[6].value),
+  }
+}
+
+export function formatContact(cotactToFormat: any): ContactsForm {
+  return {
+    name: formatName(cotactToFormat[0].value),
+    lastName: formatName(cotactToFormat[1].value),
+    phone: cotactToFormat[4].value ?? '-',
   }
 }

@@ -1,3 +1,4 @@
+// STUDENTS
 interface StudentsForm {
   name: string
   lastName: string
@@ -8,5 +9,16 @@ interface StudentsForm {
 }
 
 interface Students extends StudentsForm {
+  id: string
+}
+
+// CONTACTS
+interface ContactsForm {
+  name: string
+  lastName: string
+  phone: number
+}
+
+interface Contacts extends ContactsForm {
   id: string
 }

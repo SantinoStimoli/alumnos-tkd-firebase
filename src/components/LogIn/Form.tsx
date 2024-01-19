@@ -41,7 +41,7 @@ const LogInForm = ({ setIsAuth }: { setIsAuth: Dispatch<SetStateAction<boolean>>
     <section className='rounded border p-5 py-7  min-w-[300px] max-w-[500px] m-auto'>
       <h1>{register ? 'Registrarse' : 'Iniciar sesión'}</h1>
 
-      <form className='flex flex-col' onSubmit={handleSubmit}>
+      <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
         <TextField
           defaultValue={'santinostimoli@gmail.com'}
           required
