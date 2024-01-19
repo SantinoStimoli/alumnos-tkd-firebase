@@ -37,21 +37,23 @@ const AppRouting = () => {
   return (
     <LoadingContext.Provider value={setIsLoading}>
       <main className={'' + (isAuth && 'grid-main')}>
-        {/* M O D A L E S */}
-        <Modal open={isLoading}>
-          <Load />
-        </Modal>
-
-        {/* M E N U S */}
-        {isAuth && <Menu logOut={logOut} elements={navElements} />}
-        {isAuth && <MenuMobile logOut={logOut} elements={navElements} />}
-
-        {/* R U T A S */}
         <BrowserRouter>
+          {/* M O D A L E S */}
+          <Modal open={isLoading}>
+            <Load />
+          </Modal>
+
+          {/* M E N U S */}
+          {isAuth && <Menu logOut={logOut} elements={navElements} />}
+          {isAuth && <MenuMobile logOut={logOut} elements={navElements} />}
+
+          {/* R U T A S */}
           {isAuth ? (
             <Routes>
+              <Route path='/alumnos-tkd/inicio' element={<h1>INICIO</h1>} />
               <Route path='/alumnos-tkd/alumnos' element={<Students />} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd/alumnos'} />} />
+              <Route path='/alumnos-tkd/cuotas' element={<h1>CUOTAS</h1>} />
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} />
             </Routes>
           ) : (
             <Routes>
@@ -59,10 +61,10 @@ const AppRouting = () => {
               <Route path='*' element={<Navigate to={'/alumnos-tkd'} />} />
             </Routes>
           )}
-        </BrowserRouter>
 
-        {/* F O O T E R */}
-        {isAuth && <Footer />}
+          {/* F O O T E R */}
+          {isAuth && <Footer />}
+        </BrowserRouter>
       </main>
     </LoadingContext.Provider>
   )
