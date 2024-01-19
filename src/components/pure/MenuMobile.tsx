@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
@@ -11,7 +11,13 @@ import Typography from '@mui/material/Typography'
 import ListElement from './ListElement'
 import { Logout } from '@mui/icons-material'
 
-const MenuMobile = ({ logOut, elements }: { logOut: () => void; elements: { label: string; icon: any }[] }) => {
+const MenuMobile = ({
+  logOut,
+  elements,
+}: {
+  logOut: () => void
+  elements: { label: string; icon: ReactElement }[]
+}) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState('Inicio')
 

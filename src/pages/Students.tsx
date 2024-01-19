@@ -9,7 +9,10 @@ const Students = () => {
   const [form, setForm] = useState<Students | boolean>(false)
 
   const getStudents = () => {
-    getData('students').then((r: any) => setRows(r))
+    getData('students').then((r: Object[]) => {
+      const studentsData: Students[] = r as Students[]
+      setRows(studentsData)
+    })
   }
 
   React.useEffect(() => getStudents(), [])

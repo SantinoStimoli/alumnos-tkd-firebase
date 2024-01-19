@@ -23,3 +23,7 @@ export async function deleteStudents(ids: string[]) {
 
   await Promise.all(deletePromises)
 }
+
+export async function editStudent(studentEdited: Students, studentId: string) {
+  console.log(studentEdited, studentId)
+}

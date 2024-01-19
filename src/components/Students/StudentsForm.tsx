@@ -23,12 +23,15 @@ const StudentsForm = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (setLoading) setLoading(true)
-    const target = { ...e.target, graduation }
-    addStudent(target)
-      .then(() => updateStudents())
-      .finally(() => {
-        if (setLoading) setLoading(false)
-      })
+    if (studentToEdit === undefined) {
+      const target = { ...e.target, graduation }
+      addStudent(target)
+        .then(() => updateStudents())
+        .finally(() => {
+          if (setLoading) setLoading(false)
+        })
+    } else {
+    }
   }
   return (
     <Paper className='max-w-80 py-5 px-10'>

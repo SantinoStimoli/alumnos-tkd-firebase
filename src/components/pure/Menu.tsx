@@ -1,9 +1,9 @@
 import { Logout } from '@mui/icons-material'
 import { List, ListSubheader, Paper } from '@mui/material'
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import ListElement from './ListElement'
 
-const Menu = ({ logOut, elements }: { logOut: () => void; elements: { label: string; icon: any }[] }) => {
+const Menu = ({ logOut, elements }: { logOut: () => void; elements: { label: string; icon: ReactElement }[] }) => {
   const [selectedItem, setSelectedItem] = useState('Inicio')
 
   return (
