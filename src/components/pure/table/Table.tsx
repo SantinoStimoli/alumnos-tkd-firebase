@@ -79,7 +79,7 @@ const PersonalTable = ({
 }: {
   label: string
   rows: any
-  getElements: () => void
+  getElements: () => Promise<void>
   setForm: Dispatch<SetStateAction<boolean | Object>>
   deleteElements: (ids: string[]) => Promise<void>
 }) => {
@@ -139,9 +139,8 @@ const PersonalTable = ({
     [order, orderBy, page, rowsPerPage, rows],
   )
 
-  function updateElements() {
-    getElements()
-    setSelected([])
+  const updateElements = async () => {
+    getElements().then(() => setSelected([]))
   }
 
   return (

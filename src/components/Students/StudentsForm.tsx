@@ -5,7 +5,13 @@ import { addStudent, editStudent } from '../../services/http.ts'
 import { LoadingContext } from '../../routes/AppRouting.tsx'
 import { formatDate, formatStudent } from '../../services/services.ts'
 
-const StudentsForm = ({ studentToEdit, updateStudents }: { studentToEdit?: any; updateStudents: () => void }) => {
+const StudentsForm = ({
+  studentToEdit,
+  updateStudents,
+}: {
+  studentToEdit?: any
+  updateStudents: () => Promise<void>
+}) => {
   const studentCondition = studentToEdit !== undefined
 
   const [graduation, setGraduation] = useState(studentCondition ? studentToEdit.graduation : Graduations.WHITE)
@@ -21,17 +27,17 @@ const StudentsForm = ({ studentToEdit, updateStudents }: { studentToEdit?: any; 
     if (setLoading) setLoading(true)
     const target = { ...e.target, graduation }
     if (studentCondition) {
-      editStudent(formatStudent(target), studentToEdit.id)
-        .then(() => updateStudents())
-        .finally(() => {
+      editStudent(formatStudent(target), studentToEdit.id).then(() =>
+        updateStudents().finally(() => {
           if (setLoading) setLoading(false)
-        })
+        }),
+      )
     } else {
-      addStudent(formatStudent(target))
-        .then(() => updateStudents())
-        .finally(() => {
+      addStudent(formatStudent(target)).then(() =>
+        updateStudents().finally(() => {
           if (setLoading) setLoading(false)
-        })
+        }),
+      )
     }
   }
   return (

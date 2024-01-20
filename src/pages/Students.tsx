@@ -9,14 +9,16 @@ const Students = () => {
   const [rows, setRows] = useState<Students[]>([])
   const [form, setForm] = useState<Object | boolean>(false)
 
-  const getStudents = () => {
-    getData('students').then((r: Object[]) => {
+  const getStudents = async () => {
+    await getData('students').then((r: Object[]) => {
       const studentsData: Students[] = r as Students[]
       setRows(studentsData)
     })
   }
 
-  useEffect(() => getStudents(), [])
+  useEffect(() => {
+    getStudents()
+  }, [])
 
   return (
     <main className='main-students'>

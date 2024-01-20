@@ -13,7 +13,7 @@ const PersonalToolbar = ({
 }: {
   label: string
   selected: string[]
-  updateElements: () => void
+  updateElements: () => Promise<void>
   setForm: Dispatch<SetStateAction<boolean>>
   deleteElements: (selected: string[]) => Promise<void>
 }) => {
@@ -23,13 +23,11 @@ const PersonalToolbar = ({
 
   const deleteElementsSelected = () => {
     if (setLoading) setLoading(true)
-    deleteElements(selected)
-      .then(() => {
-        updateElements()
-      })
-      .finally(() => {
+    deleteElements(selected).then(() => {
+      updateElements().finally(() => {
         if (setLoading) setLoading(false)
       })
+    })
   }
 
   return (
