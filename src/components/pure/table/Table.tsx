@@ -31,7 +31,7 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
+function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number])
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0])
@@ -71,23 +71,25 @@ const headCells: HeadCell[] = [
 ]
 
 const PersonalTable = ({
+  label,
   rows,
   getElements,
   setForm,
   deleteElements,
 }: {
-  rows: Students[]
+  label: string
+  rows: any
   getElements: () => void
-  setForm: Dispatch<SetStateAction<boolean | Students>>
+  setForm: Dispatch<SetStateAction<boolean | Object>>
   deleteElements: (ids: string[]) => Promise<void>
 }) => {
   const [order, setOrder] = useState<Order>('asc')
-  const [orderBy, setOrderBy] = useState<keyof Students>('name')
+  const [orderBy, setOrderBy] = useState<any>('name')
   const [selected, setSelected] = useState<string[]>([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
-  const handleRequestSort = (event: MouseEvent<unknown>, property: keyof Students) => {
+  const handleRequestSort = (event: MouseEvent<unknown>, property: any) => {
     event.preventDefault()
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -96,10 +98,11 @@ const PersonalTable = ({
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id)
+      const newSelected = rows.map((n: { id: string }) => n.id)
       setSelected(newSelected)
       return
     }
+
     setSelected([])
   }
 
@@ -145,6 +148,7 @@ const PersonalTable = ({
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <PersonalToolbar
+          label={label}
           deleteElements={deleteElements}
           selected={selected}
           updateElements={updateElements}
@@ -163,13 +167,13 @@ const PersonalTable = ({
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id)
+                const isItemSelected = isSelected(row.id.toString())
                 const labelId = `enhanced-table-checkbox-${index}`
 
                 return (
                   <TableRow
                     hover
-                    onClick={() => handleClick(row.id)}
+                    onClick={() => handleClick(row.id.toString())}
                     role='checkbox'
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -194,7 +198,7 @@ const PersonalTable = ({
                     <TableCell>{row.birthDate}</TableCell>
                     <TableCell>{row.startDate}</TableCell>
                     <TableCell>
-                      <Tooltip title='Editar alumno'>
+                      <Tooltip title={`Editar ${label}`}>
                         <EditNote
                           onClick={() => setForm(row)}
                           className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors'

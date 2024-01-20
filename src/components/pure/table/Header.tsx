@@ -13,13 +13,13 @@ const PersonalHeader = ({
 }: {
   headCells: HeadCell[]
   numSelected: number
-  onRequestSort: (event: MouseEvent<unknown>, property: keyof Students) => void
+  onRequestSort: (event: MouseEvent<unknown>, property: any) => void
   onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void
   order: Order
   orderBy: string
   rowCount: number
 }) => {
-  const createSortHandler = (property: keyof Students) => (event: MouseEvent<unknown>) => {
+  const createSortHandler = (property: any) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property)
   }
 

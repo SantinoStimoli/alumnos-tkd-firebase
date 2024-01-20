@@ -7,7 +7,7 @@ import { deleteStudents } from '../services/http'
 
 const Students = () => {
   const [rows, setRows] = useState<Students[]>([])
-  const [form, setForm] = useState<Students | boolean>(false)
+  const [form, setForm] = useState<Object | boolean>(false)
 
   const getStudents = () => {
     getData('students').then((r: Object[]) => {
@@ -23,7 +23,13 @@ const Students = () => {
       <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
         <StudentsForm updateStudents={getStudents} studentToEdit={typeof form !== 'boolean' ? form : undefined} />
       </Modal>
-      <PersonalTable rows={rows} getElements={getStudents} setForm={setForm} deleteElements={deleteStudents} />
+      <PersonalTable
+        label='Alumno'
+        rows={rows}
+        getElements={getStudents}
+        setForm={setForm}
+        deleteElements={deleteStudents}
+      />
     </main>
   )
 }

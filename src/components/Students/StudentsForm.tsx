@@ -5,13 +5,7 @@ import { addStudent, editStudent } from '../../services/http.ts'
 import { LoadingContext } from '../../routes/AppRouting.tsx'
 import { formatDate, formatStudent } from '../../services/services.ts'
 
-const StudentsForm = ({
-  studentToEdit,
-  updateStudents,
-}: {
-  studentToEdit?: Students | undefined
-  updateStudents: () => void
-}) => {
+const StudentsForm = ({ studentToEdit, updateStudents }: { studentToEdit?: any; updateStudents: () => void }) => {
   const studentCondition = studentToEdit !== undefined
 
   const [graduation, setGraduation] = useState(studentCondition ? studentToEdit.graduation : Graduations.WHITE)
