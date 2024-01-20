@@ -4,14 +4,30 @@ import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
 import { deleteContacts } from '../services/http'
 import ContactsForm from '../components/Contacts/ContactsForm'
+import { Contact, HeadCell } from '../interfaces/interfaces'
+
+const headCells: HeadCell[] = [
+  {
+    id: 'name',
+    label: 'Nombre',
+  },
+  {
+    id: 'lastName',
+    label: 'Apellido',
+  },
+  {
+    id: 'phone',
+    label: 'Teléfono',
+  },
+]
 
 const Contacts = () => {
-  const [rows, setRows] = useState<Contacts[]>([])
+  const [rows, setRows] = useState<Contact[]>([])
   const [form, setForm] = useState<Object | boolean>(false)
 
   const getContacts = async () => {
     await getData('contacts').then((r: Object[]) => {
-      const contactsData: Contacts[] = r as Contacts[]
+      const contactsData: Contact[] = r as Contact[]
       setRows(contactsData)
     })
   }
@@ -31,6 +47,7 @@ const Contacts = () => {
         getElements={getContacts}
         setForm={setForm}
         deleteElements={deleteContacts}
+        headCells={headCells}
       />
     </main>
   )

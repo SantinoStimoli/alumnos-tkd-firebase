@@ -1,3 +1,5 @@
+import { ContactForm, StudentForm } from '../interfaces/interfaces'
+
 export function formatDate(date: string, isToWeb?: boolean) {
   if (date === '' || date === undefined) return '-'
   if (isToWeb === true) {
@@ -20,7 +22,7 @@ export function formatUrl(text: string): string {
   return text.toLowerCase().replace(/\s+/g, '-')
 }
 
-export function formatStudent(studentToFormat: any): StudentsForm {
+export function formatStudent(studentToFormat: any): StudentForm {
   return {
     name: formatName(studentToFormat[0].value),
     lastName: formatName(studentToFormat[1].value),
@@ -31,7 +33,7 @@ export function formatStudent(studentToFormat: any): StudentsForm {
   }
 }
 
-export function formatContact(cotactToFormat: any): ContactsForm {
+export function formatContact(cotactToFormat: any): ContactForm {
   return {
     name: formatName(cotactToFormat[0].value),
     lastName: formatName(cotactToFormat[1].value),

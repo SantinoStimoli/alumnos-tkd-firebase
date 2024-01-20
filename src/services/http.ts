@@ -1,8 +1,9 @@
+import { ContactForm, StudentForm } from '../interfaces/interfaces'
 import { deleteData, postData, putData } from './credentials'
 
 // STUDENTS
 
-export async function addStudent(student: StudentsForm) {
+export async function addStudent(student: StudentForm) {
   await postData('students', student)
 }
 
@@ -18,13 +19,13 @@ export async function deleteStudents(ids: string[]) {
   await Promise.all(deleteStudents)
 }
 
-export async function editStudent(studentEdited: StudentsForm, studentId: string) {
+export async function editStudent(studentEdited: StudentForm, studentId: string) {
   putData('students', studentId, studentEdited)
 }
 
 // CONTACTS
 
-export async function addContact(contact: ContactsForm) {
+export async function addContact(contact: ContactForm) {
   await postData('contacts', contact)
 }
 
@@ -40,6 +41,6 @@ export async function deleteContacts(ids: string[]) {
   await Promise.all(deleteContacts)
 }
 
-export async function editContact(contactEdited: ContactsForm, contactId: string) {
+export async function editContact(contactEdited: ContactForm, contactId: string) {
   putData('contacts', contactId, contactEdited)
 }

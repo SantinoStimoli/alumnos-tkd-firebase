@@ -1,6 +1,7 @@
 import React, { ChangeEvent, MouseEvent } from 'react'
 import { Box, Checkbox, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material'
 import { visuallyHidden } from '@mui/utils'
+import { HeadCell, Order } from '../../../interfaces/interfaces'
 
 const PersonalHeader = ({
   headCells,
@@ -10,6 +11,7 @@ const PersonalHeader = ({
   numSelected,
   rowCount,
   onRequestSort,
+  options,
 }: {
   headCells: HeadCell[]
   numSelected: number
@@ -18,6 +20,7 @@ const PersonalHeader = ({
   order: Order
   orderBy: string
   rowCount: number
+  options: boolean
 }) => {
   const createSortHandler = (property: any) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property)
@@ -53,7 +56,7 @@ const PersonalHeader = ({
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell>Opciones</TableCell>
+        {options && <TableCell>Opciones</TableCell>}
       </TableRow>
     </TableHead>
   )

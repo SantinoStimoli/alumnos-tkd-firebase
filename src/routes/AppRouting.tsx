@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import LogIn from '../pages/LogIn'
-import Students from '../pages/Students'
 import { auth, logOutFirebase } from '../services/credentials'
 import '../styles/grid.css'
 import Menu from '../components/pure/Menu'
@@ -10,6 +9,7 @@ import Load from '../components/pure/Load'
 import { Modal } from '@mui/material'
 import MenuMobile from '../components/pure/MenuMobile'
 import { CalendarMonth, ContactEmergency, Home, PeopleAlt } from '@mui/icons-material'
+import Students from '../pages/Students'
 import Contacts from '../pages/Contacts'
 
 export const LoadingContext = createContext<null | Dispatch<SetStateAction<boolean>>>(null)

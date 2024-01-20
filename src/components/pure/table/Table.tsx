@@ -11,6 +11,7 @@ import { ContactEmergency, EditNote } from '@mui/icons-material'
 import { Table, Tooltip } from '@mui/material'
 import PersonalToolbar from './Toolbar'
 import PersonalHeader from './Header'
+import { HeadCell, OptionCell, Order } from '../../../interfaces/interfaces'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -43,45 +44,22 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map((el) => el[0])
 }
 
-const headCells: HeadCell[] = [
-  {
-    id: 'name',
-    label: 'Nombre',
-  },
-  {
-    id: 'lastName',
-    label: 'Apellido',
-  },
-  {
-    id: 'graduation',
-    label: 'Graduación',
-  },
-  {
-    id: 'phone',
-    label: 'Teléfono',
-  },
-  {
-    id: 'birthDate',
-    label: 'Nacimiento',
-  },
-  {
-    id: 'startDate',
-    label: 'Comienzo',
-  },
-]
-
 const PersonalTable = ({
   label,
   rows,
   getElements,
   setForm,
   deleteElements,
+  headCells,
+  options,
 }: {
   label: string
   rows: any
   getElements: () => Promise<void>
   setForm: Dispatch<SetStateAction<boolean | Object>>
   deleteElements: (ids: string[]) => Promise<void>
+  headCells: HeadCell[]
+  options?: OptionCell[]
 }) => {
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<any>('name')
@@ -142,6 +120,7 @@ const PersonalTable = ({
   const updateElements = async () => {
     getElements().then(() => setSelected([]))
   }
+  console.log(options)
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -163,6 +142,7 @@ const PersonalTable = ({
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              options={options !== undefined}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -190,23 +170,24 @@ const PersonalTable = ({
                       />
                     </TableCell>
 
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.lastName}</TableCell>
-                    <TableCell>{row.graduation}</TableCell>
-                    <TableCell>{row.phone}</TableCell>
-                    <TableCell>{row.birthDate}</TableCell>
-                    <TableCell>{row.startDate}</TableCell>
-                    <TableCell>
-                      <Tooltip title={`Editar ${label}`}>
-                        <EditNote
-                          onClick={() => setForm(row)}
-                          className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors'
-                        />
-                      </Tooltip>
-                      <Tooltip title='Contactos'>
-                        <ContactEmergency className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors ml-3' />
-                      </Tooltip>
-                    </TableCell>
+                    {headCells.map((e, i) => {
+                      return <TableCell key={i}>{row[e.id]}</TableCell>
+                    })}
+
+                    {options !== undefined && (
+                      <TableCell>
+                        {/* OPCIONES.MAP */}
+                        {/* <Tooltip title={`Editar ${label}`}>
+                          <EditNote
+                            onClick={() => setForm(row)}
+                            className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors'
+                          />
+                        </Tooltip>
+                        <Tooltip title='Contactos'>
+                          <ContactEmergency className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors ml-3' />
+                        </Tooltip> */}
+                      </TableCell>
+                    )}
                   </TableRow>
                 )
               })}

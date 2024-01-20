@@ -1,5 +1,7 @@
+import { ReactElement } from 'react'
+
 // STUDENTS
-interface StudentsForm {
+export interface StudentForm {
   name: string
   lastName: string
   graduation: string
@@ -8,25 +10,30 @@ interface StudentsForm {
   startDate: string
 }
 
-interface Students extends StudentsForm {
+export interface Student extends StudentForm {
   id: string
 }
 
 // CONTACTS
-interface ContactsForm {
+export interface ContactForm {
   name: string
   lastName: string
   phone: number
 }
 
-interface Contacts extends ContactsForm {
+export interface Contact extends ContactForm {
   id: string
 }
 
 // EXTRA
-type Order = 'asc' | 'desc'
+export type Order = 'asc' | 'desc'
 
-interface HeadCell {
-  id: keyof Students
+export interface HeadCell {
+  id: keyof Student
   label: string
+}
+export interface OptionCell {
+  label: string
+  icon: ReactElement
+  action: () => void
 }

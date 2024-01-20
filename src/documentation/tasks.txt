@@ -1,5 +1,7 @@
 
 ARREGLAR BROWSER ROUTER Y SUSTITUIRLO POR HASHROUTER
 
+Tabla poder elegir las opciones que se muestren
+
 al clickear par editar selecciona la fila
-Tabla poder elegir los campos que se muestren y las opciones
+errores de consola
