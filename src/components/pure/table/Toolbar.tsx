@@ -1,28 +1,29 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { useContext } from 'react'
 import { LoadingContext } from '../../../routes/AppRouting'
-import { deleteStudents } from '../../../services/http'
 import { Add, Delete } from '@mui/icons-material'
 import { IconButton, Toolbar, Tooltip, Typography, alpha } from '@mui/material'
 
 const PersonalToolbar = ({
   selected,
   setForm,
-  updateStudents,
+  updateElements,
+  deleteElements,
 }: {
   selected: string[]
-  updateStudents: () => void
-  setForm: React.Dispatch<React.SetStateAction<boolean>>
+  updateElements: () => void
+  setForm: Dispatch<SetStateAction<boolean>>
+  deleteElements: (selected: string[]) => Promise<void>
 }) => {
   const numSelected = selected.length
 
   const setLoading = useContext(LoadingContext)
 
-  const deleteStudentsSelected = () => {
+  const deleteElementsSelected = () => {
     if (setLoading) setLoading(true)
-    deleteStudents(selected)
+    deleteElements(selected)
       .then(() => {
-        updateStudents()
+        updateElements()
       })
       .finally(() => {
         if (setLoading) setLoading(false)
@@ -55,7 +56,7 @@ const PersonalToolbar = ({
       )}
       {numSelected > 0 && (
         <Tooltip title='Eliminar'>
-          <IconButton onClick={deleteStudentsSelected}>
+          <IconButton onClick={deleteElementsSelected}>
             <Delete />
           </IconButton>
         </Tooltip>

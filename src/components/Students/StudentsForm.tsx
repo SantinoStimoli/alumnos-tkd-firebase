@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext } from 'react'
+import React, { FormEvent, useContext, useState } from 'react'
 import { Button, FormControl, MenuItem, Paper, Select, SelectChangeEvent, TextField } from '@mui/material'
 import { Graduations } from '../../data/data.ts'
 import { addStudent, editStudent } from '../../services/http.ts'
@@ -14,7 +14,7 @@ const StudentsForm = ({
 }) => {
   const studentCondition = studentToEdit !== undefined
 
-  const [graduation, setGraduation] = React.useState(studentCondition ? studentToEdit.graduation : Graduations.WHITE)
+  const [graduation, setGraduation] = useState(studentCondition ? studentToEdit.graduation : Graduations.WHITE)
 
   const setLoading = useContext(LoadingContext)
 

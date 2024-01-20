@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent, MouseEvent } from 'react'
 import { Box, Checkbox, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material'
 import { visuallyHidden } from '@mui/utils'
 
@@ -13,13 +13,13 @@ const PersonalHeader = ({
 }: {
   headCells: HeadCell[]
   numSelected: number
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Students) => void
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onRequestSort: (event: MouseEvent<unknown>, property: keyof Students) => void
+  onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void
   order: Order
   orderBy: string
   rowCount: number
 }) => {
-  const createSortHandler = (property: keyof Students) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (property: keyof Students) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property)
   }
 

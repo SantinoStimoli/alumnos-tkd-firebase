@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { ChangeEvent, Dispatch, MouseEvent, SetStateAction, useMemo, useState } from 'react'
 import Box from '@mui/material/Box'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -74,25 +74,27 @@ const PersonalTable = ({
   rows,
   getElements,
   setForm,
+  deleteElements,
 }: {
   rows: Students[]
   getElements: () => void
-  setForm: React.Dispatch<React.SetStateAction<boolean | Students>>
+  setForm: Dispatch<SetStateAction<boolean | Students>>
+  deleteElements: (ids: string[]) => Promise<void>
 }) => {
-  const [order, setOrder] = React.useState<Order>('asc')
-  const [orderBy, setOrderBy] = React.useState<keyof Students>('name')
-  const [selected, setSelected] = React.useState<string[]>([])
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [order, setOrder] = useState<Order>('asc')
+  const [orderBy, setOrderBy] = useState<keyof Students>('name')
+  const [selected, setSelected] = useState<string[]>([])
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Students) => {
+  const handleRequestSort = (event: MouseEvent<unknown>, property: keyof Students) => {
     event.preventDefault()
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
   }
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n.id)
       setSelected(newSelected)
@@ -122,19 +124,19 @@ const PersonalTable = ({
     setPage(newPage)
   }
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1
 
-  const visibleRows = React.useMemo(
+  const visibleRows = useMemo(
     () => stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, rows],
   )
 
-  function updateStudents() {
+  function updateElements() {
     getElements()
     setSelected([])
   }
@@ -142,7 +144,12 @@ const PersonalTable = ({
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <PersonalToolbar selected={selected} updateStudents={updateStudents} setForm={() => setForm(true)} />
+        <PersonalToolbar
+          deleteElements={deleteElements}
+          selected={selected}
+          updateElements={updateElements}
+          setForm={() => setForm(true)}
+        />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
             <PersonalHeader
