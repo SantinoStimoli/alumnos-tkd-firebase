@@ -35,5 +35,5 @@ export interface HeadCell {
 export interface OptionCell {
   label: string
   icon: ReactElement
-  action: () => void
+  action: Function
 }

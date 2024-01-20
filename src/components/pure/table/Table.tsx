@@ -120,7 +120,6 @@ const PersonalTable = ({
   const updateElements = async () => {
     getElements().then(() => setSelected([]))
   }
-  console.log(options)
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -176,16 +175,13 @@ const PersonalTable = ({
 
                     {options !== undefined && (
                       <TableCell>
-                        {/* OPCIONES.MAP */}
-                        {/* <Tooltip title={`Editar ${label}`}>
-                          <EditNote
-                            onClick={() => setForm(row)}
-                            className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors'
-                          />
-                        </Tooltip>
-                        <Tooltip title='Contactos'>
-                          <ContactEmergency className='text-gray-400 hover:text-gray-500 [&_*]:transition-colors ml-3' />
-                        </Tooltip> */}
+                        {options.map((e, i) => {
+                          return (
+                            <Tooltip key={i} title={e.label} onClick={() => e.action(row)}>
+                              {e.icon}
+                            </Tooltip>
+                          )
+                        })}
                       </TableCell>
                     )}
                   </TableRow>

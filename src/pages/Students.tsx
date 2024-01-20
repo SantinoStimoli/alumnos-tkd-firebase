@@ -4,7 +4,7 @@ import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
 import StudentsForm from '../components/Students/StudentsForm'
 import { deleteStudents } from '../services/http'
-import { Delete } from '@mui/icons-material'
+import { ContactEmergency, Delete, EditNote } from '@mui/icons-material'
 import { HeadCell, Student } from '../interfaces/interfaces'
 
 const headCells: HeadCell[] = [
@@ -61,7 +61,10 @@ const Students = () => {
         setForm={setForm}
         deleteElements={deleteStudents}
         headCells={headCells}
-        options={[{ label: 'HOLAA', icon: <Delete /> }]}
+        options={[
+          { label: 'Editar Alumno', icon: <EditNote />, action: (row: Student) => setForm(row) },
+          { label: 'Contactos', icon: <ContactEmergency />, action: (row: Student) => console.log(row) },
+        ]}
       />
     </main>
   )

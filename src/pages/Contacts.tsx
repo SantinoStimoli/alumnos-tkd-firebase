@@ -5,6 +5,7 @@ import PersonalTable from '../components/pure/table/Table'
 import { deleteContacts } from '../services/http'
 import ContactsForm from '../components/Contacts/ContactsForm'
 import { Contact, HeadCell } from '../interfaces/interfaces'
+import { EditNote } from '@mui/icons-material'
 
 const headCells: HeadCell[] = [
   {
@@ -48,6 +49,7 @@ const Contacts = () => {
         setForm={setForm}
         deleteElements={deleteContacts}
         headCells={headCells}
+        options={[{ label: 'Editar Contacto', icon: <EditNote />, action: (row: Contact) => setForm(row) }]}
       />
     </main>
   )
