@@ -35,6 +35,6 @@ export function formatContact(cotactToFormat: any): ContactsForm {
   return {
     name: formatName(cotactToFormat[0].value),
     lastName: formatName(cotactToFormat[1].value),
-    phone: cotactToFormat[4].value ?? '-',
+    phone: cotactToFormat[2].value ?? '-',
   }
 }

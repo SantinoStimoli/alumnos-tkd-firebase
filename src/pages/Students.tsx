@@ -21,7 +21,7 @@ const Students = () => {
   }, [])
 
   return (
-    <main className='main-students'>
+    <main>
       <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
         <StudentsForm updateStudents={getStudents} studentToEdit={typeof form !== 'boolean' ? form : undefined} />
       </Modal>

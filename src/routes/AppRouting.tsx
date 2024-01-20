@@ -9,13 +9,15 @@ import Footer from '../components/pure/Footer'
 import Load from '../components/pure/Load'
 import { Modal } from '@mui/material'
 import MenuMobile from '../components/pure/MenuMobile'
-import { CalendarMonth, Home, PeopleAlt } from '@mui/icons-material'
+import { CalendarMonth, ContactEmergency, Home, PeopleAlt } from '@mui/icons-material'
+import Contacts from '../pages/Contacts'
 
 export const LoadingContext = createContext<null | Dispatch<SetStateAction<boolean>>>(null)
 
 const navElements = [
   { label: 'Inicio', icon: <Home /> },
   { label: 'Alumnos', icon: <PeopleAlt /> },
+  { label: 'Contactos', icon: <ContactEmergency /> },
   { label: 'Cuotas', icon: <CalendarMonth /> },
 ]
 
@@ -52,8 +54,9 @@ const AppRouting = () => {
             <Routes>
               <Route path='/alumnos-tkd/inicio' element={<h1>INICIO</h1>} />
               <Route path='/alumnos-tkd/alumnos' element={<Students />} />
+              <Route path='/alumnos-tkd/contactos' element={<Contacts />} />
               <Route path='/alumnos-tkd/cuotas' element={<h1>CUOTAS</h1>} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd/alumnos'} />} />
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/contactos'} />} />
               {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} /> */}
             </Routes>
           ) : (
