@@ -25,7 +25,7 @@ export function formatStudent(studentToFormat: any): StudentsForm {
     name: formatName(studentToFormat[0].value),
     lastName: formatName(studentToFormat[1].value),
     graduation: studentToFormat[2].value,
-    phone: studentToFormat[4].value ?? '-',
+    phone: studentToFormat[4].value === '' ? '-' : studentToFormat[4].value,
     birthDate: formatDate(studentToFormat[5].value),
     startDate: formatDate(studentToFormat[6].value),
   }

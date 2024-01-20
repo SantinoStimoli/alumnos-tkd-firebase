@@ -1,20 +1,16 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
-import TableSortLabel from '@mui/material/TableSortLabel'
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
-import { visuallyHidden } from '@mui/utils'
-import { Add, ContactEmergency, Delete, EditNote } from '@mui/icons-material'
-import { IconButton, Toolbar, Tooltip, Typography, alpha } from '@mui/material'
-import { deleteStudents } from '../../services/http'
-import { LoadingContext } from '../../routes/AppRouting'
+import { ContactEmergency, EditNote } from '@mui/icons-material'
+import { Table, Tooltip } from '@mui/material'
+import PersonalToolbar from './Toolbar'
+import PersonalHeader from './Header'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -25,8 +21,6 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   }
   return 0
 }
-
-type Order = 'asc' | 'desc'
 
 function getComparator<Key extends keyof any>(
   order: Order,
@@ -49,63 +43,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0])
 }
 
-interface HeadCell {
-  id: keyof Students
-  label: string
-}
-
-interface EnhancedTableProps {
-  numSelected: number
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Students) => void
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
-  order: Order
-  orderBy: string
-  rowCount: number
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props
-  const createSortHandler = (property: keyof Students) => (event: React.MouseEvent<unknown>) => {
-    onRequestSort(event, property)
-  }
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding='checkbox'>
-          <Checkbox
-            color='primary'
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell key={headCell.id} sortDirection={orderBy === headCell.id ? order : false}>
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component='span' sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-        <TableCell>Opciones</TableCell>
-      </TableRow>
-    </TableHead>
-  )
-}
-
-const headCells: readonly HeadCell[] = [
+const headCells: HeadCell[] = [
   {
     id: 'name',
     label: 'Nombre',
@@ -132,69 +70,13 @@ const headCells: readonly HeadCell[] = [
   },
 ]
 
-function EnhancedTableToolbar(props: {
-  selected: string[]
-  updateStudents: () => void
-  setForm: React.Dispatch<React.SetStateAction<boolean>>
-}) {
-  const { selected, updateStudents, setForm } = props
-  const numSelected = selected.length
-
-  const setLoading = React.useContext(LoadingContext)
-
-  const deleteStudentsSelected = () => {
-    if (setLoading) setLoading(true)
-    deleteStudents(selected)
-      .then(() => {
-        updateStudents()
-      })
-      .finally(() => {
-        if (setLoading) setLoading(false)
-      })
-  }
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography sx={{ flex: '1 1 100%' }} color='inherit' variant='subtitle1' component='div'>
-          {numSelected} seleccionado{numSelected > 1 && 's'}
-        </Typography>
-      ) : (
-        <div className='flex items-center gap-3'>
-          <Typography sx={{ flex: '1 1 100%' }} variant='h6' id='tableTitle' component='div'>
-            Alumnos
-          </Typography>
-          <IconButton onClick={() => setForm(true)}>
-            <Add />
-          </IconButton>
-        </div>
-      )}
-      {numSelected > 0 && (
-        <Tooltip title='Eliminar'>
-          <IconButton onClick={deleteStudentsSelected}>
-            <Delete />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  )
-}
-
-const StudentsTable = ({
+const PersonalTable = ({
   rows,
-  getStudents,
+  getElements,
   setForm,
 }: {
   rows: Students[]
-  getStudents: () => void
+  getElements: () => void
   setForm: React.Dispatch<React.SetStateAction<boolean | Students>>
 }) => {
   const [order, setOrder] = React.useState<Order>('asc')
@@ -253,17 +135,18 @@ const StudentsTable = ({
   )
 
   function updateStudents() {
-    getStudents()
+    getElements()
     setSelected([])
   }
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar selected={selected} updateStudents={updateStudents} setForm={() => setForm(true)} />
+        <PersonalToolbar selected={selected} updateStudents={updateStudents} setForm={() => setForm(true)} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
-            <EnhancedTableHead
+            <PersonalHeader
+              headCells={headCells}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -335,4 +218,4 @@ const StudentsTable = ({
   )
 }
 
-export default StudentsTable
+export default PersonalTable

@@ -22,3 +22,11 @@ interface ContactsForm {
 interface Contacts extends ContactsForm {
   id: string
 }
+
+// EXTRA
+type Order = 'asc' | 'desc'
+
+interface HeadCell {
+  id: keyof Students
+  label: string
+}

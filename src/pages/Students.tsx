@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import StudentsTable from '../components/Students/StudentsTable'
 import { getData } from '../services/credentials'
-import StudentsForm from '../components/Students/StudentsForm'
 import { Modal } from '@mui/material'
+import PersonalTable from '../components/pure/table/Table'
+import StudentsForm from '../components/Students/StudentsForm'
 
 const Students = () => {
   const [rows, setRows] = useState<Students[]>([])
@@ -22,7 +22,7 @@ const Students = () => {
       <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
         <StudentsForm updateStudents={getStudents} studentToEdit={typeof form !== 'boolean' ? form : undefined} />
       </Modal>
-      <StudentsTable rows={rows} getStudents={getStudents} setForm={setForm} />
+      <PersonalTable rows={rows} getElements={getStudents} setForm={setForm} />
     </main>
   )
 }
