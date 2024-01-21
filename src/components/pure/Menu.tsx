@@ -1,6 +1,6 @@
 import { Logout } from '@mui/icons-material'
 import { List, ListSubheader, Paper } from '@mui/material'
-import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react'
+import React, { Dispatch, ReactElement, SetStateAction } from 'react'
 import ListElement from './ListElement'
 
 const Menu = ({

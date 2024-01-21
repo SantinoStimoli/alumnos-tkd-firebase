@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import LogIn from '../pages/LogIn'
 import { auth, logOutFirebase } from '../services/credentials'
 import '../styles/grid.css'
@@ -47,7 +47,7 @@ const AppRouting = () => {
           </div>
         </Modal>
 
-        <BrowserRouter>
+        <HashRouter>
           {/* M E N U S */}
           {isAuth && (
             <Menu
@@ -69,23 +69,23 @@ const AppRouting = () => {
           {/* R U T A S */}
           {isAuth ? (
             <Routes>
-              <Route path='/inicio' element={<h1>INICIO</h1>} />
-              <Route path='/alumnos' element={<Students />} />
-              <Route path='/contactos' element={<Contacts />} />
-              <Route path='/cuotas' element={<h1>CUOTAS</h1>} />
-              <Route path='*' element={<Navigate to={'/contactos'} />} />
-              {/* <Route path='*' element={<Navigate to={'/inicio'} />} /> */}
+              <Route path='/alumnos-tkd/inicio' element={<h1>INICIO</h1>} />
+              <Route path='/alumnos-tkd/alumnos' element={<Students />} />
+              <Route path='/alumnos-tkd/contactos' element={<Contacts />} />
+              <Route path='/alumnos-tkd/cuotas' element={<h1>CUOTAS</h1>} />
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/contactos'} />} />
+              {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} /> */}
             </Routes>
           ) : (
             <Routes>
-              <Route path='/' element={<LogIn setIsAuth={setIsAuth} />} />
-              <Route path='*' element={<Navigate to={'/'} />} />
+              <Route path='/alumnos-tkd' element={<LogIn setIsAuth={setIsAuth} />} />
+              <Route path='*' element={<Navigate to={'/alumnos-tkd'} />} />
             </Routes>
           )}
 
           {/* F O O T E R */}
           {isAuth && <Footer />}
-        </BrowserRouter>
+        </HashRouter>
       </main>
     </LoadingContext.Provider>
   )

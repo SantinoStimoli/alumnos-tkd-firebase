@@ -21,7 +21,7 @@ const ListElement = ({
   return (
     <ListItemButton
       component={Link}
-      to={'/alumnos-tkd/' + formatUrl(label)}
+      to={`/alumnos-tkd/${formatUrl(label)}`}
       selected={isSelected}
       onClick={() => {
         action !== undefined && action()
