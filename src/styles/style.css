@@ -33,3 +33,7 @@
 .Mui-selected:hover {
   background: rgb(216, 230, 245) !important;
 }
+
+.table-options > * {
+  margin-right: 5px;
+}

@@ -173,7 +173,7 @@ const PersonalTable = ({
                     })}
 
                     {options !== undefined && (
-                      <TableCell>
+                      <TableCell className='table-options'>
                         {options.map((e, i) => {
                           return (
                             <Tooltip key={i} title={e.label} onClick={() => e.action(row)}>

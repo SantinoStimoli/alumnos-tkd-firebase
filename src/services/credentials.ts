@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, setDoc } from 'firebase/firestore'
+import { collection, getDocs, getFirestore } from 'firebase/firestore'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,7 +19,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
+export const db = getFirestore(app)
 export const auth = getAuth(app)
 
 // sessions functions
@@ -33,26 +33,4 @@ export const logInFirebase = async (email: string, password: string) => {
 
 export const logOutFirebase = async () => {
   await signOut(auth)
-}
-
-// HTTP functions
-
-export const postData = async (collectionName: string, data: Object) => {
-  await addDoc(collection(db, collectionName), data)
-}
-
-export const getData = async (collectionName: string) => {
-  const response = await getDocs(collection(db, collectionName))
-  const data: Object[] = []
-  response.forEach((d) => data.push({ ...d.data(), id: d.id }))
-
-  return data
-}
-
-export const putData = async (collectionName: string, id: string, data: Object) => {
-  await setDoc(doc(db, collectionName, id), data)
-}
-
-export const deleteData = async (collectionName: string, id: string) => {
-  await deleteDoc(doc(db, collectionName, id))
 }

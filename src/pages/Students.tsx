@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { getData } from '../services/credentials'
 import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
 import StudentsForm from '../components/Students/StudentsForm'
-import { deleteStudents } from '../services/http'
+import { deleteStudents, getStudents } from '../services/http'
 import { ContactEmergency, EditNote } from '@mui/icons-material'
 import { HeadCell, Student } from '../interfaces/interfaces'
+import ContactList from '../components/Students/ContactList'
 
 const headCells: HeadCell[] = [
   {
@@ -36,36 +36,41 @@ const headCells: HeadCell[] = [
 
 const Students = () => {
   const [rows, setRows] = useState<Student[]>([])
-  const [form, setForm] = useState<Object | boolean>(false)
-
-  const getStudents = async () => {
-    await getData('students').then((r: Object[]) => {
-      const studentsData: Student[] = r as Student[]
-      setRows(studentsData)
-    })
-  }
+  const [editForm, setEditForm] = useState<Object | boolean>(false)
+  const [studentId, setStudentId] = useState<string | null>(null)
 
   useEffect(() => {
-    getStudents()
+    getStudents(setRows)
   }, [])
 
   return (
     <main>
-      <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
+      {/* M O D A L E S */}
+      <Modal open={editForm !== false} onClose={() => setEditForm(false)} className='flex justify-center items-center'>
         <div>
-          <StudentsForm updateStudents={getStudents} studentToEdit={typeof form !== 'boolean' ? form : undefined} />
+          <StudentsForm
+            updateStudents={() => getStudents(setRows)}
+            studentToEdit={typeof editForm !== 'boolean' ? editForm : undefined}
+          />
         </div>
       </Modal>
+      <Modal open={studentId !== null} onClose={() => setStudentId(null)} className='flex justify-center items-center'>
+        <div>
+          <ContactList id={studentId ?? ''} />
+        </div>
+      </Modal>
+
+      {/* P A G I N A */}
       <PersonalTable
         label='Alumno'
         rows={rows}
-        getElements={getStudents}
-        setForm={setForm}
+        getElements={() => getStudents(setRows)}
+        setForm={setEditForm}
         deleteElements={deleteStudents}
         headCells={headCells}
         options={[
-          { label: 'Editar Alumno', icon: <EditNote />, action: (row: Student) => setForm(row) },
-          { label: 'Ver contactos', icon: <ContactEmergency />, action: (row: Student) => console.log(row) },
+          { label: 'Editar Alumno', icon: <EditNote />, action: (row: Student) => setEditForm(row) },
+          { label: 'Ver contactos', icon: <ContactEmergency />, action: (row: Student) => setStudentId(row.id) },
         ]}
       />
     </main>

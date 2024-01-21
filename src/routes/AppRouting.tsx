@@ -6,7 +6,7 @@ import '../styles/grid.css'
 import Menu from '../components/pure/Menu'
 import Footer from '../components/pure/Footer'
 import Load from '../components/pure/Load'
-import { Modal } from '@mui/material'
+import { Backdrop, CircularProgress, Modal } from '@mui/material'
 import MenuMobile from '../components/pure/MenuMobile'
 import { CalendarMonth, ContactEmergency, Home, PeopleAlt } from '@mui/icons-material'
 import Students from '../pages/Students'
@@ -41,11 +41,9 @@ const AppRouting = () => {
     <LoadingContext.Provider value={setIsLoading}>
       <main className={'' + (isAuth && 'grid-main')}>
         {/* M O D A L E S */}
-        <Modal open={isLoading}>
-          <div className='dots-container'>
-            <Load />
-          </div>
-        </Modal>
+        <Backdrop sx={{ color: '#fff', zIndex: 10000000 }} open={isLoading}>
+          <CircularProgress color='inherit' />
+        </Backdrop>
 
         <BrowserRouter>
           {/* M E N U S */}
@@ -73,14 +71,14 @@ const AppRouting = () => {
               <Route path='/alumnos-tkd/alumnos' element={<Students />} />
               <Route path='/alumnos-tkd/contactos' element={<Contacts />} />
               <Route path='/alumnos-tkd/cuotas' element={<h1>CUOTAS</h1>} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} />
+              {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} /> */}
 
-              {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/contactos'} />} /> */}
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/alumnos'} />} />
             </Routes>
           ) : (
             <Routes>
               <Route path='/alumnos-tkd' element={<LogIn setIsAuth={setIsAuth} />} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd'} />} />
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/'} />} />
             </Routes>
           )}
 

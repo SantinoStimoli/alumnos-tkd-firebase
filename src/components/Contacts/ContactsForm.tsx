@@ -7,9 +7,11 @@ import { formatContact } from '../../services/services.ts'
 const ContactsForm = ({
   contactToEdit,
   updateContacts,
+  studentId,
 }: {
   contactToEdit?: any
   updateContacts: () => Promise<void>
+  studentId: string
 }) => {
   const contactCondition = contactToEdit !== undefined
 
@@ -20,13 +22,13 @@ const ContactsForm = ({
     if (setLoading) setLoading(true)
     const target = e.target
     if (contactCondition) {
-      editContact(formatContact(target), contactToEdit.id).then(() =>
+      editContact(formatContact(target, studentId), contactToEdit.id).then(() =>
         updateContacts().finally(() => {
           if (setLoading) setLoading(false)
         }),
       )
     } else {
-      addContact(formatContact(target)).then(() =>
+      addContact(formatContact(target, studentId)).then(() =>
         updateContacts().finally(() => {
           if (setLoading) setLoading(false)
         }),
@@ -35,7 +37,7 @@ const ContactsForm = ({
   }
   return (
     <Paper className='max-w-80 py-5 px-10'>
-      <h1 className='text-2xl font-bold mb-3'>Cargar alumno</h1>
+      <h1 className='text-2xl font-bold mb-3'>Cargar contacto</h1>
       <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
         <TextField
           defaultValue={contactCondition ? contactToEdit.name : ''}
@@ -60,6 +62,7 @@ const ContactsForm = ({
           label='Teléfono'
           variant='standard'
           InputLabelProps={{ shrink: true }}
+          required
         />
 
         <div className='flex flex-col mt-5'>

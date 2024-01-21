@@ -16,6 +16,7 @@ export interface Student extends StudentForm {
 
 // CONTACTS
 export interface ContactForm {
+  studentId?: string
   name: string
   lastName: string
   phone: number

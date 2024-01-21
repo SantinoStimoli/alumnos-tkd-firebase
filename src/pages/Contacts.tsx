@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getData } from '../services/credentials'
 import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
-import { deleteContacts } from '../services/http'
+import { deleteContacts, getContacts } from '../services/http'
 import ContactsForm from '../components/Contacts/ContactsForm'
 import { Contact, HeadCell } from '../interfaces/interfaces'
 import { EditNote } from '@mui/icons-material'
@@ -26,28 +26,27 @@ const Contacts = () => {
   const [rows, setRows] = useState<Contact[]>([])
   const [form, setForm] = useState<Object | boolean>(false)
 
-  const getContacts = async () => {
-    await getData('contacts').then((r: Object[]) => {
-      const contactsData: Contact[] = r as Contact[]
-      setRows(contactsData)
-    })
-  }
-
   useEffect(() => {
-    getContacts()
+    getContacts(setRows)
   }, [])
 
   return (
     <main>
-      <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
+      {/* M O D A L E S */}
+      <Modal open={form} onClose={() => setForm(false)} className='flex justify-center items-center'>
         <div>
-          <ContactsForm updateContacts={getContacts} contactToEdit={typeof form !== 'boolean' ? form : undefined} />
+          <ContactsForm
+            updateContacts={() => getContacts(setRows)}
+            contactToEdit={typeof form !== 'boolean' ? form : undefined}
+          />
         </div>
       </Modal>
+
+      {/* P A G I N A */}
       <PersonalTable
         label='Contacto'
         rows={rows}
-        getElements={getContacts}
+        getElements={() => getContacts(setRows)}
         setForm={setForm}
         deleteElements={deleteContacts}
         headCells={headCells}
