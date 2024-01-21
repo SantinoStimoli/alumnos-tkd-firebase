@@ -1,11 +1,19 @@
 import { Logout } from '@mui/icons-material'
 import { List, ListSubheader, Paper } from '@mui/material'
-import React, { ReactElement, useState } from 'react'
+import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react'
 import ListElement from './ListElement'
 
-const Menu = ({ logOut, elements }: { logOut: () => void; elements: { label: string; icon: ReactElement }[] }) => {
-  const [selectedItem, setSelectedItem] = useState('Inicio')
-
+const Menu = ({
+  logOut,
+  elements,
+  selectedItem,
+  setSelectedItem,
+}: {
+  logOut: () => void
+  elements: { label: string; icon: ReactElement }[]
+  selectedItem: string
+  setSelectedItem: Dispatch<SetStateAction<string>>
+}) => {
   return (
     <aside id='desk'>
       <Paper>

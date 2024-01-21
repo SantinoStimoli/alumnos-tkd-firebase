@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
@@ -14,12 +14,15 @@ import { Logout } from '@mui/icons-material'
 const MenuMobile = ({
   logOut,
   elements,
+  selectedItem,
+  setSelectedItem,
 }: {
   logOut: () => void
   elements: { label: string; icon: ReactElement }[]
+  selectedItem: string
+  setSelectedItem: Dispatch<SetStateAction<string>>
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [selectedItem, setSelectedItem] = useState('Inicio')
 
   return (
     <Box id='mobile' sx={{ display: 'flex' }}>

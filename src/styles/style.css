@@ -20,3 +20,16 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #888;
 }
+
+.Mui-selected {
+  background: #edf4fb !important;
+  transition: all ease-in-out 200ms !important;
+  -webkit-transition: all ease-in-out 200ms !important;
+  -moz-transition: all ease-in-out 200ms !important;
+  -ms-transition: all ease-in-out 200ms !important;
+  -o-transition: all ease-in-out 200ms !important;
+}
+
+.Mui-selected:hover {
+  background: rgb(216, 230, 245) !important;
+}

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, createContext, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import LogIn from '../pages/LogIn'
 import { auth, logOutFirebase } from '../services/credentials'
@@ -24,6 +24,7 @@ const navElements = [
 const AppRouting = () => {
   const [isAuth, setIsAuth] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [selectedItem, setSelectedItem] = useState('Inicio')
 
   useEffect(() => {
     if (auth.currentUser === null) setIsAuth(false)
@@ -48,23 +49,37 @@ const AppRouting = () => {
 
         <BrowserRouter>
           {/* M E N U S */}
-          {isAuth && <Menu logOut={logOut} elements={navElements} />}
-          {isAuth && <MenuMobile logOut={logOut} elements={navElements} />}
+          {isAuth && (
+            <Menu
+              logOut={logOut}
+              elements={navElements}
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+            />
+          )}
+          {isAuth && (
+            <MenuMobile
+              logOut={logOut}
+              elements={navElements}
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+            />
+          )}
 
           {/* R U T A S */}
           {isAuth ? (
             <Routes>
-              <Route path='/alumnos-tkd/inicio' element={<h1>INICIO</h1>} />
-              <Route path='/alumnos-tkd/alumnos' element={<Students />} />
-              <Route path='/alumnos-tkd/contactos' element={<Contacts />} />
-              <Route path='/alumnos-tkd/cuotas' element={<h1>CUOTAS</h1>} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd/contactos'} />} />
-              {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} /> */}
+              <Route path='/inicio' element={<h1>INICIO</h1>} />
+              <Route path='/alumnos' element={<Students />} />
+              <Route path='/contactos' element={<Contacts />} />
+              <Route path='/cuotas' element={<h1>CUOTAS</h1>} />
+              <Route path='*' element={<Navigate to={'/contactos'} />} />
+              {/* <Route path='*' element={<Navigate to={'/inicio'} />} /> */}
             </Routes>
           ) : (
             <Routes>
-              <Route path='/alumnos-tkd/' element={<LogIn setIsAuth={setIsAuth} />} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd/'} />} />
+              <Route path='/' element={<LogIn setIsAuth={setIsAuth} />} />
+              <Route path='*' element={<Navigate to={'/'} />} />
             </Routes>
           )}
 
