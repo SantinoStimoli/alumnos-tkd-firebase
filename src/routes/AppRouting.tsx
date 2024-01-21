@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, createContext, useEffect, useRef, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import LogIn from '../pages/LogIn'
 import { auth, logOutFirebase } from '../services/credentials'
@@ -39,12 +39,14 @@ const AppRouting = () => {
   return (
     <LoadingContext.Provider value={setIsLoading}>
       <main className={'' + (isAuth && 'grid-main')}>
-        <BrowserRouter>
-          {/* M O D A L E S */}
-          <Modal open={isLoading}>
+        {/* M O D A L E S */}
+        <Modal open={isLoading}>
+          <div className='dots-container'>
             <Load />
-          </Modal>
+          </div>
+        </Modal>
 
+        <BrowserRouter>
           {/* M E N U S */}
           {isAuth && <Menu logOut={logOut} elements={navElements} />}
           {isAuth && <MenuMobile logOut={logOut} elements={navElements} />}

@@ -40,7 +40,9 @@ const Contacts = () => {
   return (
     <main>
       <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
-        <ContactsForm updateContacts={getContacts} contactToEdit={typeof form !== 'boolean' ? form : undefined} />
+        <div>
+          <ContactsForm updateContacts={getContacts} contactToEdit={typeof form !== 'boolean' ? form : undefined} />
+        </div>
       </Modal>
       <PersonalTable
         label='Contacto'

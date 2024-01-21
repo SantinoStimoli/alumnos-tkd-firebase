@@ -4,7 +4,7 @@ import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
 import StudentsForm from '../components/Students/StudentsForm'
 import { deleteStudents } from '../services/http'
-import { ContactEmergency, Delete, EditNote } from '@mui/icons-material'
+import { ContactEmergency, EditNote } from '@mui/icons-material'
 import { HeadCell, Student } from '../interfaces/interfaces'
 
 const headCells: HeadCell[] = [
@@ -52,7 +52,9 @@ const Students = () => {
   return (
     <main>
       <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
-        <StudentsForm updateStudents={getStudents} studentToEdit={typeof form !== 'boolean' ? form : undefined} />
+        <div>
+          <StudentsForm updateStudents={getStudents} studentToEdit={typeof form !== 'boolean' ? form : undefined} />
+        </div>
       </Modal>
       <PersonalTable
         label='Alumno'
@@ -63,7 +65,7 @@ const Students = () => {
         headCells={headCells}
         options={[
           { label: 'Editar Alumno', icon: <EditNote />, action: (row: Student) => setForm(row) },
-          { label: 'Contactos', icon: <ContactEmergency />, action: (row: Student) => console.log(row) },
+          { label: 'Ver contactos', icon: <ContactEmergency />, action: (row: Student) => console.log(row) },
         ]}
       />
     </main>
