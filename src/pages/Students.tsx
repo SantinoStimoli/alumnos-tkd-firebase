@@ -5,7 +5,7 @@ import StudentsForm from '../components/Students/StudentsForm'
 import { deleteStudents, getStudents } from '../services/http'
 import { ContactEmergency, EditNote } from '@mui/icons-material'
 import { HeadCell, Student } from '../interfaces/interfaces'
-import ContactList from '../components/Students/ContactList'
+import ContactList from '../components/Contacts/ContactList'
 
 const headCells: HeadCell[] = [
   {

@@ -47,7 +47,6 @@ const Contacts = () => {
         label='Contacto'
         rows={rows}
         getElements={() => getContacts(setRows)}
-        setForm={setForm}
         deleteElements={deleteContacts}
         headCells={headCells}
         options={[{ label: 'Editar Contacto', icon: <EditNote />, action: (row: Contact) => setForm(row) }]}

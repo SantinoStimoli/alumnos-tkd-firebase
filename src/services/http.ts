@@ -1,7 +1,18 @@
 import { Dispatch, SetStateAction } from 'react'
 import { Contact, ContactForm, Student, StudentForm } from '../interfaces/interfaces'
 import { db } from './credentials'
-import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore'
 
 // STUDENTS
 
@@ -14,12 +25,12 @@ export async function getStudents(setRows: Dispatch<SetStateAction<Student[]>>) 
   setRows(studentsData)
 }
 
-export async function addStudent(student: StudentForm) {
-  await addDoc(collection(db, 'students'), student)
+export async function getStudent(id: string) {
+  return await getDoc(doc(db, 'students', id))
 }
 
-export async function deleteStudent(id: string) {
-  await deleteDoc(doc(db, 'students', id))
+export async function addStudent(student: StudentForm) {
+  await addDoc(collection(db, 'students'), student)
 }
 
 export async function deleteStudents(ids: string[]) {
@@ -32,6 +43,9 @@ export async function deleteStudents(ids: string[]) {
 
 export async function editStudent(studentEdited: StudentForm, studentId: string) {
   await setDoc(doc(db, 'students', studentId), studentEdited)
+}
+export async function upgradeGraduation(studentId: string, newGraduation: string) {
+  await updateDoc(doc(db, 'students', studentId), { graduation: newGraduation })
 }
 
 // CONTACTS
@@ -56,10 +70,6 @@ export async function getContactsByStudent(studentId: string) {
 
 export async function addContact(contact: ContactForm) {
   await addDoc(collection(db, 'contacts'), contact)
-}
-
-export async function deleteContact(id: string) {
-  await deleteDoc(doc(db, 'contacts', id))
 }
 
 export async function deleteContacts(ids: string[]) {

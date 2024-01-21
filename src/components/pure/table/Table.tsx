@@ -55,7 +55,7 @@ const PersonalTable = ({
   label: string
   rows: any
   getElements: () => Promise<void>
-  setForm: Dispatch<SetStateAction<boolean | Object>>
+  setForm?: Dispatch<SetStateAction<boolean | Object>> | undefined
   deleteElements: (ids: string[]) => Promise<void>
   headCells: HeadCell[]
   options?: OptionCell[]
@@ -128,7 +128,7 @@ const PersonalTable = ({
           deleteElements={deleteElements}
           selected={selected}
           updateElements={updateElements}
-          setForm={() => setForm(true)}
+          setForm={setForm}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
@@ -150,7 +150,6 @@ const PersonalTable = ({
                 return (
                   <TableRow
                     hover
-                    onClick={() => handleClick(row.id.toString())}
                     role='checkbox'
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -158,7 +157,7 @@ const PersonalTable = ({
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding='checkbox'>
+                    <TableCell onClick={() => handleClick(row.id.toString())} padding='checkbox'>
                       <Checkbox
                         color='primary'
                         checked={isItemSelected}

@@ -35,7 +35,7 @@ const ContactList = ({ id }: { id: string }) => {
           )
         })}
 
-        <ContactListElement action={() => setContactForm(true)} label='Añadir contacto' phone={id} icon={<Add />} />
+        <ContactListElement action={() => setContactForm(true)} label='Añadir contacto' icon={<Add />} />
       </List>
     </Paper>
   )

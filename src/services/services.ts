@@ -1,4 +1,5 @@
 import { ContactForm, StudentForm } from '../interfaces/interfaces'
+import { getStudent, upgradeGraduation } from './http'
 
 export function formatDate(date: string, isToWeb?: boolean) {
   if (date === '' || date === undefined) return '-'
@@ -40,4 +41,33 @@ export function formatContact(contactToFormat: any, studentId: string): ContactF
     phone: contactToFormat[2].value ?? '-',
     studentId: studentId ?? '',
   }
+}
+
+export async function upgradeGraduations(ids: string[]) {
+  const logic: { [key: string]: string } = {
+    'Blanco': 'Punta amarilla',
+    'Punta amarilla': 'Amarillo',
+    'Amarillo': 'Punta verde',
+    'Punta verde': 'Verde',
+    'Verde': 'Punta azul',
+    'Punta azul': 'Azul',
+    'Azul': 'Punta roja',
+    'Punta roja': 'Rojo',
+    'Rojo': 'Punta negra',
+    'Punta negra': 'Negro (I)',
+    'Negro (I)': 'Negro (II)',
+    'Negro (II)': 'Negro (III)',
+    'Negro (III)': 'Negro (IV)',
+    'Negro (IV)': 'Negro (V)',
+    'Negro (V)': 'Negro (VI)',
+    'Negro (VI)': 'Negro (VII)',
+    'Negro (VII)': 'Negro (VIII)',
+    'Negro (VIII)': 'Negro (IX)',
+  }
+
+  await ids.forEach((id) => {
+    getStudent(id).then((r) => {
+      upgradeGraduation(r.id, logic[r.data()?.graduation] ?? 'Negro (IX)')
+    })
+  })
 }

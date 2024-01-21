@@ -16,7 +16,7 @@ const ContactListElement = ({
     <ListItem
       className={'rounded hover:bg-gray-200 transition-all cursor-pointer' + (action === undefined && ' border-b')}
       component='a'
-      href={action === undefined ? `tel:${phone}` : '#'}
+      href={action === undefined ? `whatsapp://send?phone=${phone}` : '#'}
       onClick={action}
     >
       <ListItemAvatar>

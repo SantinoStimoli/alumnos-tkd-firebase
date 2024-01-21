@@ -1,8 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { useContext } from 'react'
 import { LoadingContext } from '../../../routes/AppRouting'
-import { Add, Delete } from '@mui/icons-material'
+import { Add, Delete, Upgrade } from '@mui/icons-material'
 import { IconButton, Toolbar, Tooltip, Typography, alpha } from '@mui/material'
+import { upgradeGraduations } from '../../../services/services'
 
 const PersonalToolbar = ({
   label,
@@ -14,7 +15,7 @@ const PersonalToolbar = ({
   label: string
   selected: string[]
   updateElements: () => Promise<void>
-  setForm: Dispatch<SetStateAction<boolean>>
+  setForm: Dispatch<SetStateAction<boolean>> | undefined
   deleteElements: (selected: string[]) => Promise<void>
 }) => {
   const numSelected = selected.length
@@ -49,12 +50,27 @@ const PersonalToolbar = ({
           <Typography sx={{ flex: '1 1 100%' }} variant='h6' id='tableTitle' component='div'>
             {`${label}s`}
           </Typography>
-          <IconButton onClick={() => setForm(true)}>
-            <Tooltip title={`Añadir ${label}`}>
-              <Add />
-            </Tooltip>
-          </IconButton>
+          {setForm !== undefined && (
+            <IconButton onClick={() => setForm(true)}>
+              <Tooltip title={`Añadir ${label}`}>
+                <Add />
+              </Tooltip>
+            </IconButton>
+          )}
         </div>
+      )}
+      {numSelected > 0 && label.toLocaleLowerCase() === 'alumno' && (
+        <Tooltip title={'Subir de categoría'}>
+          <IconButton
+            onClick={() => {
+              upgradeGraduations(selected).finally(() => {
+                updateElements()
+              })
+            }}
+          >
+            <Upgrade />
+          </IconButton>
+        </Tooltip>
       )}
       {numSelected > 0 && (
         <Tooltip title={`Eliminar ${label}${selected.length > 1 ? 's' : ''}`}>
