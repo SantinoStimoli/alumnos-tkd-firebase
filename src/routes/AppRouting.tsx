@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react'
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import LogIn from '../pages/LogIn'
 import { auth, logOutFirebase } from '../services/credentials'
 import '../styles/grid.css'
@@ -47,7 +47,7 @@ const AppRouting = () => {
           </div>
         </Modal>
 
-        <HashRouter>
+        <BrowserRouter>
           {/* M E N U S */}
           {isAuth && (
             <Menu
@@ -73,8 +73,9 @@ const AppRouting = () => {
               <Route path='/alumnos-tkd/alumnos' element={<Students />} />
               <Route path='/alumnos-tkd/contactos' element={<Contacts />} />
               <Route path='/alumnos-tkd/cuotas' element={<h1>CUOTAS</h1>} />
-              <Route path='*' element={<Navigate to={'/alumnos-tkd/contactos'} />} />
-              {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} /> */}
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} />
+
+              {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/contactos'} />} /> */}
             </Routes>
           ) : (
             <Routes>
@@ -85,7 +86,7 @@ const AppRouting = () => {
 
           {/* F O O T E R */}
           {isAuth && <Footer />}
-        </HashRouter>
+        </BrowserRouter>
       </main>
     </LoadingContext.Provider>
   )
