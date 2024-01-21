@@ -34,12 +34,6 @@ export function formatStudent(studentToFormat: any): StudentForm {
 }
 
 export function formatContact(contactToFormat: any, studentId: string): ContactForm {
-  console.log({
-    name: formatName(contactToFormat[0].value),
-    lastName: formatName(contactToFormat[1].value),
-    phone: contactToFormat[2].value ?? '-',
-    studentId,
-  })
   return {
     name: formatName(contactToFormat[0].value),
     lastName: formatName(contactToFormat[1].value),

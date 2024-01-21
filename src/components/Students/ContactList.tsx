@@ -1,6 +1,6 @@
 import { Add, FamilyRestroom } from '@mui/icons-material'
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText, Modal, Paper } from '@mui/material'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { List, Modal, Paper } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import { Contact } from '../../interfaces/interfaces'
 import { getContactsByStudent } from '../../services/http'
 import ContactsForm from '../Contacts/ContactsForm'

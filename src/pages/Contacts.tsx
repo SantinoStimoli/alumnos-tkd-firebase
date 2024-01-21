@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { getData } from '../services/credentials'
 import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
 import { deleteContacts, getContacts } from '../services/http'
@@ -33,9 +32,10 @@ const Contacts = () => {
   return (
     <main>
       {/* M O D A L E S */}
-      <Modal open={form} onClose={() => setForm(false)} className='flex justify-center items-center'>
+      <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
         <div>
           <ContactsForm
+            studentId=''
             updateContacts={() => getContacts(setRows)}
             contactToEdit={typeof form !== 'boolean' ? form : undefined}
           />

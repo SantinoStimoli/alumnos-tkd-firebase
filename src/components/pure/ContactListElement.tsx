@@ -1,4 +1,3 @@
-import { FamilyRestroom } from '@mui/icons-material'
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
 import React, { ReactElement } from 'react'
 
