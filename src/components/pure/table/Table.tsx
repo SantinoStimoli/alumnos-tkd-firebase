@@ -55,7 +55,7 @@ const PersonalTable = ({
   label: string
   rows: any
   getElements: () => Promise<void>
-  setForm?: Dispatch<SetStateAction<boolean | Object>> | undefined
+  setForm: Dispatch<SetStateAction<any>>
   deleteElements: (ids: string[]) => Promise<void>
   headCells: HeadCell[]
   options?: OptionCell[]

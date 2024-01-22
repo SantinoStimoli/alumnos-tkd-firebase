@@ -31,7 +31,14 @@ const ContactList = ({ id }: { id: string }) => {
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         {contacts.map((e, i) => {
           return (
-            <ContactListElement key={i} label={`${e.name} ${e.lastName}`} phone={e.phone} icon={<FamilyRestroom />} />
+            <ContactListElement
+              key={i}
+              label={`${e.name} ${e.lastName}`}
+              phone={e.phone}
+              id={e.id}
+              icon={<FamilyRestroom />}
+              updateContacts={getStudentContact}
+            />
           )
         })}
 

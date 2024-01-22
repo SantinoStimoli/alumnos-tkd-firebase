@@ -23,7 +23,7 @@ const headCells: HeadCell[] = [
 
 const Contacts = () => {
   const [rows, setRows] = useState<Contact[]>([])
-  const [form, setForm] = useState<Object | boolean>(false)
+  const [form, setForm] = useState<Contact | boolean>(false)
 
   useEffect(() => {
     getContacts(setRows)
@@ -35,7 +35,6 @@ const Contacts = () => {
       <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
         <div>
           <ContactsForm
-            studentId=''
             updateContacts={() => getContacts(setRows)}
             contactToEdit={typeof form !== 'boolean' ? form : undefined}
           />
@@ -45,6 +44,7 @@ const Contacts = () => {
       {/* P A G I N A */}
       <PersonalTable
         label='Contacto'
+        setForm={setForm}
         rows={rows}
         getElements={() => getContacts(setRows)}
         deleteElements={deleteContacts}

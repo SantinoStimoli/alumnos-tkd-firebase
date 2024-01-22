@@ -1,5 +1,5 @@
 import React, { FormEvent, useContext, useState } from 'react'
-import { Button, FormControl, MenuItem, Paper, Select, SelectChangeEvent, TextField } from '@mui/material'
+import { Button, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, TextField } from '@mui/material'
 import { Graduations } from '../../data/data.ts'
 import { addStudent, editStudent } from '../../services/http.ts'
 import { LoadingContext } from '../../routes/AppRouting.tsx'
@@ -61,7 +61,8 @@ const StudentsForm = ({
           required
         />
         <FormControl fullWidth>
-          <Select labelId='graduations' value={graduation} onChange={handleChange} required>
+          <InputLabel id='graduations'>Categoría</InputLabel>
+          <Select labelId='graduations' label='Categoría' value={graduation} onChange={handleChange} required>
             {Object.values(Graduations).map((graduation, i) => {
               return (
                 <MenuItem key={i} value={graduation}>

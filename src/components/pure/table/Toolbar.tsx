@@ -15,7 +15,7 @@ const PersonalToolbar = ({
   label: string
   selected: string[]
   updateElements: () => Promise<void>
-  setForm: Dispatch<SetStateAction<boolean>> | undefined
+  setForm: Dispatch<SetStateAction<boolean | Object>>
   deleteElements: (selected: string[]) => Promise<void>
 }) => {
   const numSelected = selected.length
@@ -50,13 +50,11 @@ const PersonalToolbar = ({
           <Typography sx={{ flex: '1 1 100%' }} variant='h6' id='tableTitle' component='div'>
             {`${label}s`}
           </Typography>
-          {setForm !== undefined && (
-            <IconButton onClick={() => setForm(true)}>
-              <Tooltip title={`Añadir ${label}`}>
-                <Add />
-              </Tooltip>
-            </IconButton>
-          )}
+          <IconButton onClick={() => setForm(true)}>
+            <Tooltip title={`Añadir ${label}`}>
+              <Add />
+            </Tooltip>
+          </IconButton>
         </div>
       )}
       {numSelected > 0 && label.toLocaleLowerCase() === 'alumno' && (
