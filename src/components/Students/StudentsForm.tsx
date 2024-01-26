@@ -12,9 +12,9 @@ const StudentsForm = ({
   studentToEdit?: any
   updateStudents: () => Promise<void>
 }) => {
-  const studentCondition = studentToEdit !== undefined
+  const isViewMode = studentToEdit !== undefined
 
-  const [graduation, setGraduation] = useState(studentCondition ? studentToEdit.graduation : Graduations.WHITE)
+  const [graduation, setGraduation] = useState(isViewMode ? studentToEdit.graduation : Graduations.WHITE)
   const [edit, setEdit] = useState(true)
 
   const setLoading = useContext(LoadingContext)
@@ -25,33 +25,34 @@ const StudentsForm = ({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (setLoading) setLoading(true)
+    setLoading && setLoading(true)
     const target = { ...e.target, graduation }
-    if (studentCondition) {
+    if (isViewMode) {
       editStudent(formatStudent(target), studentToEdit.id).then(() =>
         updateStudents().finally(() => {
-          if (setLoading) setLoading(false)
+          setLoading && setLoading(false)
           setEdit(true)
         }),
       )
     } else {
       addStudent(formatStudent(target)).then(() =>
         updateStudents().finally(() => {
-          if (setLoading) setLoading(false)
+          setLoading && setLoading(false)
           setEdit(true)
         }),
       )
     }
   }
+
   return (
-    <Paper className='max-w-80 py-5 px-10'>
-      <h1 className='text-3xl text-center font-bold mb-5'>{studentCondition ? 'Editar alumno' : 'Cargar alumno'}</h1>
+    <Paper className='modal-content'>
+      <h1>{isViewMode ? 'Editar alumno' : 'Cargar alumno'}</h1>
       <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
         <div className='sm:flex gap-2'>
           <TextField
-            disabled={studentCondition && edit}
+            disabled={isViewMode && edit}
             fullWidth
-            defaultValue={studentCondition ? studentToEdit.name : ''}
+            defaultValue={isViewMode ? studentToEdit.name : ''}
             id='name'
             label='Nombre'
             variant='standard'
@@ -59,9 +60,9 @@ const StudentsForm = ({
             required
           />
           <TextField
-            disabled={studentCondition && edit}
+            disabled={isViewMode && edit}
             fullWidth
-            defaultValue={studentCondition ? studentToEdit.lastName : ''}
+            defaultValue={isViewMode ? studentToEdit.lastName : ''}
             id='lastName'
             label='Apellido'
             variant='standard'
@@ -72,7 +73,7 @@ const StudentsForm = ({
         <FormControl fullWidth>
           <InputLabel id='graduations'>Categoría</InputLabel>
           <Select
-            disabled={studentCondition && edit}
+            disabled={isViewMode && edit}
             labelId='graduations'
             label='Categoría'
             value={graduation}
@@ -89,8 +90,8 @@ const StudentsForm = ({
           </Select>
         </FormControl>
         <TextField
-          disabled={studentCondition && edit}
-          defaultValue={studentCondition ? studentToEdit.phone : ''}
+          disabled={isViewMode && edit}
+          defaultValue={isViewMode ? studentToEdit.phone : ''}
           id='phone'
           type='number'
           label='Teléfono'
@@ -99,9 +100,9 @@ const StudentsForm = ({
         />
         <div className='sm:flex gap-2'>
           <TextField
-            disabled={studentCondition && edit}
+            disabled={isViewMode && edit}
             fullWidth
-            defaultValue={studentCondition ? formatDate(studentToEdit.birthDate, true) : ''}
+            defaultValue={isViewMode ? formatDate(studentToEdit.birthDate, true) : ''}
             label='Nacimiento'
             id='birthDate'
             type='date'
@@ -109,9 +110,9 @@ const StudentsForm = ({
             InputLabelProps={{ shrink: true }}
           />
           <TextField
-            disabled={studentCondition && edit}
+            disabled={isViewMode && edit}
             fullWidth
-            defaultValue={studentCondition ? formatDate(studentToEdit.startDate, true) : ''}
+            defaultValue={isViewMode ? formatDate(studentToEdit.startDate, true) : ''}
             label='Inicio'
             id='startDate'
             type='date'
@@ -121,23 +122,23 @@ const StudentsForm = ({
         </div>
 
         <TextField
-          disabled={studentCondition && edit}
+          disabled={isViewMode && edit}
           fullWidth
           label='Anotaciones'
           multiline
-          defaultValue={studentCondition ? studentToEdit.annotations : ''}
+          defaultValue={isViewMode ? studentToEdit.annotations : ''}
           rows={3}
         />
 
         <div className='flex flex-col mt-5'>
           <div className='flex gap-3 '>
-            {studentCondition && (
+            {isViewMode && (
               <Button fullWidth onClick={() => setEdit(!edit)} type='button' variant='contained'>
                 Editar
               </Button>
             )}
             <Button fullWidth type='submit' variant='contained'>
-              {studentCondition ? 'Confirmar' : 'Añadir'}
+              {isViewMode ? 'Confirmar' : 'Añadir'}
             </Button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
 import StudentsForm from '../components/Students/StudentsForm'
@@ -6,6 +6,7 @@ import { deleteStudents, getStudents } from '../services/http'
 import { ContactEmergency, Info as InfoIcon } from '@mui/icons-material'
 import { HeadCell, Student } from '../interfaces/interfaces'
 import ContactsList from '../components/Contacts/ContactsList'
+import { LoadingContext } from '../routes/AppRouting'
 
 const headCells: HeadCell[] = [
   {
@@ -31,22 +32,31 @@ const Students = () => {
   const [editForm, setEditForm] = useState<Object | boolean>(false)
   const [studentId, setStudentId] = useState<string>('')
 
+  const setLoading = useContext(LoadingContext)
+
+  const updateStudents = async () => {
+    setLoading && setLoading(true)
+    await getStudents()
+      .then((r) => setRows(r))
+      .finally(() => setLoading && setLoading(false))
+  }
+
   useEffect(() => {
-    getStudents(setRows)
+    updateStudents()
   }, [])
 
   return (
     <main>
       {/* M O D A L E S */}
-      <Modal open={editForm !== false} onClose={() => setEditForm(false)} className='flex justify-center items-center'>
+      <Modal open={editForm !== false} onClose={() => setEditForm(false)} className='modal'>
         <div>
           <StudentsForm
-            updateStudents={() => getStudents(setRows)}
+            updateStudents={() => updateStudents()}
             studentToEdit={typeof editForm !== 'boolean' ? editForm : undefined}
           />
         </div>
       </Modal>
-      <Modal open={studentId !== ''} onClose={() => setStudentId('')} className='flex justify-center items-center'>
+      <Modal open={studentId !== ''} onClose={() => setStudentId('')} className='modal'>
         <div>
           <ContactsList id={studentId} />
         </div>
@@ -56,7 +66,7 @@ const Students = () => {
       <PersonalTable
         label='Alumno'
         rows={rows}
-        getElements={() => getStudents(setRows)}
+        getElements={updateStudents}
         setForm={setEditForm}
         deleteElements={deleteStudents}
         headCells={headCells}

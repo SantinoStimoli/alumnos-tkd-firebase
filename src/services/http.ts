@@ -16,13 +16,12 @@ import {
 
 // STUDENTS
 
-export async function getStudents(setRows: Dispatch<SetStateAction<Student[]>>) {
+export async function getStudents() {
   const response = await getDocs(collection(db, 'students'))
   const data: Object[] = []
   response.forEach((d) => data.push({ ...d.data(), id: d.id }))
 
-  const studentsData: Student[] = data as Student[]
-  setRows(studentsData)
+  return data as Student[]
 }
 
 export async function getStudent(id: string) {

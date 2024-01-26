@@ -37,3 +37,15 @@
 .table-options > * {
   margin-right: 5px;
 }
+
+.modal {
+  @apply flex justify-center items-center;
+}
+
+.modal-content {
+  @apply max-w-80 py-5 px-10;
+}
+
+.modal-content h1 {
+  @apply text-3xl text-center font-bold mb-5;
+}

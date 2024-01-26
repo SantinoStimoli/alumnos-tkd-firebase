@@ -16,7 +16,7 @@ const StudentsList = ({ contactId }: { contactId: string }) => {
   const setLoading = useContext(LoadingContext)
 
   const getStudentContact = async () => {
-    if (setLoading) setLoading(true)
+    setLoading && setLoading(true)
     getStudentsByContactId(contactId, setConnectedStudents).finally(() => {
       setLoading && setLoading(false)
     })
@@ -29,7 +29,7 @@ const StudentsList = ({ contactId }: { contactId: string }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (setLoading) setLoading(true)
+    setLoading && setLoading(true)
     addStudentToContact(contactId, studentId).finally(() => {
       getStudentContact().finally(() => setLoading && setLoading(false))
     })
@@ -37,20 +37,16 @@ const StudentsList = ({ contactId }: { contactId: string }) => {
 
   useEffect(() => {
     getStudentContact()
-    getStudents(setStudentsForm)
+    getStudents().then((r) => setStudentsForm(r))
   }, [])
 
   return (
-    <Paper className='max-w-80 py-5 px-10'>
+    <Paper className='modal-content'>
       {/* M O D A L E S */}
-      <Modal
-        open={studentAddForm}
-        onClose={() => setStudentAddForm(false)}
-        className='flex justify-center items-center'
-      >
-        <Paper className='max-w-80 py-5 px-10'>
+      <Modal open={studentAddForm} onClose={() => setStudentAddForm(false)} className='modal'>
+        <Paper className='modal-content'>
           <form onSubmit={handleSubmit}>
-            <h1 className='text-2xl text-center font-bold mb-5'>Añadir alumno como conexión</h1>
+            <h1>Añadir alumno como conexión</h1>
             <FormControl fullWidth>
               <InputLabel id='students'>Alumno</InputLabel>
               <Select labelId='students' label='Alumnos' value={studentId} onChange={handleChange} required>

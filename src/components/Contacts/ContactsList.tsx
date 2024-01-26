@@ -10,25 +10,23 @@ const ContactsList = ({ id }: { id: string }) => {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [contactForm, setContactForm] = useState(false)
 
-  const getStudentContact = async () => {
-    await getContactsByStudent(id).then((r) => {
-      setContacts(r)
-    })
+  const getContactsOfTheStudent = async () => {
+    await getContactsByStudent(id).then((r) => setContacts(r))
   }
 
   useEffect(() => {
-    getStudentContact()
+    getContactsOfTheStudent()
   }, [])
 
   return (
-    <Paper className='max-w-80 py-5 px-10'>
-      <Modal open={contactForm} onClose={() => setContactForm(false)} className='flex justify-center items-center'>
+    <Paper className='modal-content'>
+      <Modal open={contactForm} onClose={() => setContactForm(false)} className='modal'>
         <div>
-          <ContactsForm studentId={id} updateContacts={getStudentContact} />
+          <ContactsForm studentId={id} updateContacts={getContactsOfTheStudent} />
         </div>
       </Modal>
 
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <List>
         {contacts.map((e, i) => {
           return (
             <ContactListElement
@@ -38,7 +36,7 @@ const ContactsList = ({ id }: { id: string }) => {
               phone={e.phone}
               id={e.id}
               icon={<FamilyRestroom />}
-              updateContacts={getStudentContact}
+              updateContacts={getContactsOfTheStudent}
             />
           )
         })}

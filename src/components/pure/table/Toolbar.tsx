@@ -23,10 +23,10 @@ const PersonalToolbar = ({
   const setLoading = useContext(LoadingContext)
 
   const deleteElementsSelected = () => {
-    if (setLoading) setLoading(true)
+    setLoading && setLoading(true)
     deleteElements(selected).then(() => {
       updateElements().finally(() => {
-        if (setLoading) setLoading(false)
+        setLoading && setLoading(false)
       })
     })
   }

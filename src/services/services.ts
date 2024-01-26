@@ -1,9 +1,9 @@
 import { ContactForm, StudentForm } from '../interfaces/interfaces'
 import { getStudent, upgradeGraduation } from './http'
 
-export function formatDate(date: string, isToWeb?: boolean) {
+export function formatDate(date: string, read?: boolean) {
   if (date === '' || date === undefined) return '-'
-  if (isToWeb === true) {
+  if (read === true) {
     const [day, month, year] = date.split('/')
     return `${year}-${month}-${day}`
   } else {
@@ -15,7 +15,7 @@ export function formatDate(date: string, isToWeb?: boolean) {
 export function formatName(name: string): string {
   return name
     .split(' ')
-    .map((palabra) => palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase())
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ')
 }
 

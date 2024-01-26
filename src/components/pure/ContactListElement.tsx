@@ -26,18 +26,18 @@ const ContactListElement = ({
   const setLoading = useContext(LoadingContext)
 
   const removeContact = (contactId: string) => {
-    if (setLoading) setLoading(true)
+    setLoading && setLoading(true)
     removeContactFromStudent(contactId, studentId ?? '').finally(() => {
       updateContacts !== undefined &&
         updateContacts().then(() => {
-          if (setLoading) setLoading(false)
+          setLoading && setLoading(false)
         })
     })
   }
 
   return (
     <ListItem
-      className={'' + (action !== undefined ? 'rounded hover:bg-gray-200 transition-all cursor-pointer' : '')}
+      className={action !== undefined ? 'rounded hover:bg-gray-200 transition-all cursor-pointer' : ''}
       onClick={action}
     >
       <ListItemAvatar onMouseOver={() => setHover(true)} onMouseLeave={() => setHover(false)}>

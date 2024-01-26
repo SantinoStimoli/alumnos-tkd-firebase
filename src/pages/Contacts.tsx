@@ -35,7 +35,7 @@ const Contacts = () => {
   return (
     <main>
       {/* M O D A L E S */}
-      <Modal open={form !== false} onClose={() => setForm(false)} className='flex justify-center items-center'>
+      <Modal open={form !== false} onClose={() => setForm(false)} className='modal'>
         <div>
           <ContactsForm
             updateContacts={() => getContacts(setRows)}
@@ -43,11 +43,7 @@ const Contacts = () => {
           />
         </div>
       </Modal>
-      <Modal
-        open={contactConecctionsIds !== null}
-        onClose={() => setContactConecctionsIds(null)}
-        className='flex justify-center items-center'
-      >
+      <Modal open={contactConecctionsIds !== null} onClose={() => setContactConecctionsIds(null)} className='modal'>
         <div>
           <StudentsList contactId={contactId} />
         </div>

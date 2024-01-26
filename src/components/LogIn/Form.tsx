@@ -12,7 +12,7 @@ const LogInForm = ({ setIsAuth }: { setIsAuth: Dispatch<SetStateAction<boolean>>
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (setLoading) setLoading(true)
+    setLoading && setLoading(true)
     const target = e.target as typeof e.target & {
       mail: { value: string }
       password: { value: string }
@@ -24,7 +24,7 @@ const LogInForm = ({ setIsAuth }: { setIsAuth: Dispatch<SetStateAction<boolean>>
           setIsAuth(true)
         })
         .finally(() => {
-          if (setLoading) setLoading(false)
+          setLoading && setLoading(false)
         })
     } else {
       await logInFirebase(target.mail.value, target.password.value)
@@ -32,7 +32,7 @@ const LogInForm = ({ setIsAuth }: { setIsAuth: Dispatch<SetStateAction<boolean>>
           setIsAuth(true)
         })
         .finally(() => {
-          if (setLoading) setLoading(false)
+          setLoading && setLoading(false)
         })
     }
   }

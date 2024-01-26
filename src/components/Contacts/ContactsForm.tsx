@@ -20,27 +20,25 @@ const ContactsForm = ({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (setLoading) setLoading(true)
+    setLoading && setLoading(true)
     const target = e.target
     if (contactCondition && studentId === undefined) {
       editContact(formatContact(target), contactToEdit.id).then(() =>
         updateContacts().finally(() => {
-          if (setLoading) setLoading(false)
+          setLoading && setLoading(false)
         }),
       )
     } else {
       addContact(formatContact(target, studentId)).then(() => {
         updateContacts().finally(() => {
-          if (setLoading) setLoading(false)
+          setLoading && setLoading(false)
         })
       })
     }
   }
   return (
-    <Paper className='max-w-80 py-5 px-10'>
-      <h1 className='text-3xl text-center font-bold mb-5'>
-        {contactCondition ? 'Editar contacto' : 'Cargar contacto'}
-      </h1>
+    <Paper className='modal-content'>
+      <h1>{contactCondition ? 'Editar contacto' : 'Cargar contacto'}</h1>
       <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
         <TextField
           defaultValue={contactCondition ? contactToEdit.name : ''}
