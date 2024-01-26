@@ -2,8 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* SCROLL */
 ::-webkit-scrollbar {
   width: 12px;
+}
+
+/* MODALS */
+.modal {
+  @apply flex justify-center items-center;
+}
+
+.modal-content {
+  @apply max-w-80 py-5 px-10;
+}
+
+.modal-content h1 {
+  @apply text-3xl text-center font-bold mb-5;
+}
+
+/* LOADER */
+.MuiBackdrop-root {
+  @apply text-white z-[99999];
 }
 
 ::-webkit-scrollbar-track {
@@ -21,6 +40,7 @@
   background-color: #888;
 }
 
+/* EXTRA */
 .Mui-selected {
   background: #edf4fb !important;
   transition: all ease-in-out 200ms !important;
@@ -36,16 +56,4 @@
 
 .table-options > * {
   margin-right: 5px;
-}
-
-.modal {
-  @apply flex justify-center items-center;
-}
-
-.modal-content {
-  @apply max-w-80 py-5 px-10;
-}
-
-.modal-content h1 {
-  @apply text-3xl text-center font-bold mb-5;
 }
