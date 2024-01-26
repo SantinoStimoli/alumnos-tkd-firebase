@@ -3,9 +3,9 @@ import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
 import StudentsForm from '../components/Students/StudentsForm'
 import { deleteStudents, getStudents } from '../services/http'
-import { ContactEmergency, EditNote } from '@mui/icons-material'
+import { ContactEmergency, Info as InfoIcon } from '@mui/icons-material'
 import { HeadCell, Student } from '../interfaces/interfaces'
-import ContactList from '../components/Contacts/ContactList'
+import ContactsList from '../components/Contacts/ContactsList'
 
 const headCells: HeadCell[] = [
   {
@@ -24,20 +24,12 @@ const headCells: HeadCell[] = [
     id: 'phone',
     label: 'Teléfono',
   },
-  {
-    id: 'birthDate',
-    label: 'Nacimiento',
-  },
-  {
-    id: 'startDate',
-    label: 'Comienzo',
-  },
 ]
 
 const Students = () => {
   const [rows, setRows] = useState<Student[]>([])
   const [editForm, setEditForm] = useState<Object | boolean>(false)
-  const [studentId, setStudentId] = useState<string | null>(null)
+  const [studentId, setStudentId] = useState<string>('')
 
   useEffect(() => {
     getStudents(setRows)
@@ -54,9 +46,9 @@ const Students = () => {
           />
         </div>
       </Modal>
-      <Modal open={studentId !== null} onClose={() => setStudentId(null)} className='flex justify-center items-center'>
+      <Modal open={studentId !== ''} onClose={() => setStudentId('')} className='flex justify-center items-center'>
         <div>
-          <ContactList id={studentId ?? ''} />
+          <ContactsList id={studentId} />
         </div>
       </Modal>
 
@@ -69,7 +61,7 @@ const Students = () => {
         deleteElements={deleteStudents}
         headCells={headCells}
         options={[
-          { label: 'Editar Alumno', icon: <EditNote />, action: (row: Student) => setEditForm(row) },
+          { label: 'Ver Alumno', icon: <InfoIcon />, action: (row: Student) => setEditForm(row) },
           { label: 'Ver contactos', icon: <ContactEmergency />, action: (row: Student) => setStudentId(row.id) },
         ]}
       />

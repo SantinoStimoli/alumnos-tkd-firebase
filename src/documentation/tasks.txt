@@ -2,3 +2,5 @@
 ARREGLAR BROWSER ROUTER Y SUSTITUIRLO POR HASHROUTER
 
 NOMBRE DE APP
+
+poder seleccionar varios alumnos por contacto

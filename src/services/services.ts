@@ -31,15 +31,16 @@ export function formatStudent(studentToFormat: any): StudentForm {
     phone: studentToFormat[4].value === '' ? '-' : studentToFormat[4].value,
     birthDate: formatDate(studentToFormat[5].value),
     startDate: formatDate(studentToFormat[6].value),
+    annotations: studentToFormat[7].value,
   }
 }
 
-export function formatContact(contactToFormat: any, studentId: string): ContactForm {
+export function formatContact(contactToFormat: any, studentId?: string): ContactForm {
   return {
     name: formatName(contactToFormat[0].value),
     lastName: formatName(contactToFormat[1].value),
     phone: contactToFormat[2].value ?? '-',
-    studentId: studentId ?? '',
+    studentsIds: studentId !== undefined ? [studentId] : [],
   }
 }
 

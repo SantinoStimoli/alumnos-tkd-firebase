@@ -3,10 +3,10 @@ import { List, Modal, Paper } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Contact } from '../../interfaces/interfaces'
 import { getContactsByStudent } from '../../services/http'
-import ContactsForm from '../Contacts/ContactsForm'
+import ContactsForm from './ContactsForm'
 import ContactListElement from '../pure/ContactListElement'
 
-const ContactList = ({ id }: { id: string }) => {
+const ContactsList = ({ id }: { id: string }) => {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [contactForm, setContactForm] = useState(false)
 
@@ -24,7 +24,7 @@ const ContactList = ({ id }: { id: string }) => {
     <Paper className='max-w-80 py-5 px-10'>
       <Modal open={contactForm} onClose={() => setContactForm(false)} className='flex justify-center items-center'>
         <div>
-          <ContactsForm studentId={id ?? ''} updateContacts={getStudentContact} />
+          <ContactsForm studentId={id} updateContacts={getStudentContact} />
         </div>
       </Modal>
 
@@ -48,4 +48,4 @@ const ContactList = ({ id }: { id: string }) => {
   )
 }
 
-export default ContactList
+export default ContactsList

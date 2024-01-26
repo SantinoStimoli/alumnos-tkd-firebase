@@ -60,11 +60,14 @@ export async function getContacts(setRows: Dispatch<SetStateAction<Contact[]>>) 
 }
 
 export async function getContactsByStudent(studentId: string) {
-  const response = await getDocs(query(collection(db, 'contacts'), where('studentId', '==', studentId)))
+  const response = await getDocs(
+    query(collection(db, 'contacts'), where('studentsIds', 'array-contains', studentId)), //VER ESTOOOOOO
+  )
   const data: Object[] = []
   response.forEach((d) => data.push({ ...d.data(), id: d.id }))
 
   const contactsData: Contact[] = data as Contact[]
+
   return contactsData
 }
 

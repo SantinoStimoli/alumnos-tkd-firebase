@@ -8,6 +8,7 @@ export interface StudentForm {
   phone: number
   birthDate: string
   startDate: string
+  annotations: string
 }
 
 export interface Student extends StudentForm {
@@ -16,7 +17,7 @@ export interface Student extends StudentForm {
 
 // CONTACTS
 export interface ContactForm {
-  studentId?: string
+  studentsIds: string[]
   name: string
   lastName: string
   phone: number

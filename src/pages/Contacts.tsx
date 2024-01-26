@@ -4,7 +4,8 @@ import PersonalTable from '../components/pure/table/Table'
 import { deleteContacts, getContacts } from '../services/http'
 import ContactsForm from '../components/Contacts/ContactsForm'
 import { Contact, HeadCell } from '../interfaces/interfaces'
-import { EditNote } from '@mui/icons-material'
+import { EditNote, Person } from '@mui/icons-material'
+import StudentsList from '../components/Students/StudentsList'
 
 const headCells: HeadCell[] = [
   {
@@ -24,6 +25,7 @@ const headCells: HeadCell[] = [
 const Contacts = () => {
   const [rows, setRows] = useState<Contact[]>([])
   const [form, setForm] = useState<Contact | boolean>(false)
+  const [contactConextionsIds, setContactConextionsIds] = useState<string[] | null>(null)
 
   useEffect(() => {
     getContacts(setRows)
@@ -40,6 +42,15 @@ const Contacts = () => {
           />
         </div>
       </Modal>
+      <Modal
+        open={contactConextionsIds !== null}
+        onClose={() => setContactConextionsIds(null)}
+        className='flex justify-center items-center'
+      >
+        <div>
+          <StudentsList ids={contactConextionsIds ?? []} />
+        </div>
+      </Modal>
 
       {/* P A G I N A */}
       <PersonalTable
@@ -49,7 +60,10 @@ const Contacts = () => {
         getElements={() => getContacts(setRows)}
         deleteElements={deleteContacts}
         headCells={headCells}
-        options={[{ label: 'Editar Contacto', icon: <EditNote />, action: (row: Contact) => setForm(row) }]}
+        options={[
+          { label: 'Editar Contacto', icon: <EditNote />, action: (row: Contact) => setForm(row) },
+          { label: 'Conexiones', icon: <Person />, action: (row: Contact) => setContactConextionsIds(row.studentsIds) },
+        ]}
       />
     </main>
   )
