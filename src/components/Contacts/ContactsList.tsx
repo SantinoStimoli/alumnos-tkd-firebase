@@ -33,6 +33,7 @@ const ContactsList = ({ id }: { id: string }) => {
           return (
             <ContactListElement
               key={i}
+              studentId={id}
               label={`${e.name} ${e.lastName}`}
               phone={e.phone}
               id={e.id}

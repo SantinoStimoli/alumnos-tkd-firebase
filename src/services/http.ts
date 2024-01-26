@@ -44,6 +44,7 @@ export async function deleteStudents(ids: string[]) {
 export async function editStudent(studentEdited: StudentForm, studentId: string) {
   await setDoc(doc(db, 'students', studentId), studentEdited)
 }
+
 export async function upgradeGraduation(studentId: string, newGraduation: string) {
   await updateDoc(doc(db, 'students', studentId), { graduation: newGraduation })
 }
@@ -94,9 +95,10 @@ export async function editContact(contactEdited: ContactForm, contactId: string)
 export async function addStudentToContact(contactId: string, studentId: string) {
   await getContact(contactId).then((r) => {
     const data = r.data() as Contact
-    const ids = [...data.studentsIds, studentId]
-    console.log(data, ids)
-    updateDoc(doc(db, 'contacts', contactId), { studentsIds: ids })
+    const ids = data.studentsIds
+    if (!ids.includes(studentId)) {
+      updateDoc(doc(db, 'contacts', contactId), { studentsIds: [...ids, studentId] })
+    }
   })
 }
 
@@ -108,8 +110,17 @@ export async function getStudentsByContactId(contactId: string, setStudents: Dis
 
     Promise.all(studentPromises).then((responses) => {
       const studentsData = responses.map((r) => r.data() as Student)
-      console.log(studentsData)
       setStudents(studentsData)
     })
+  })
+}
+
+export async function removeContactFromStudent(contactId: string, studentId: string) {
+  getContact(contactId).then((r) => {
+    const { studentsIds } = r.data() as Contact
+    let indexToDelete = studentsIds.indexOf(studentId)
+    studentsIds.splice(indexToDelete, 1)
+
+    updateDoc(doc(db, 'contacts', contactId), { studentsIds })
   })
 }
