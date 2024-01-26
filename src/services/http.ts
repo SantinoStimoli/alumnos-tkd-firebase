@@ -59,6 +59,10 @@ export async function getContacts(setRows: Dispatch<SetStateAction<Contact[]>>) 
   setRows(contactsData)
 }
 
+export async function getContact(id: string) {
+  return await getDoc(doc(db, 'contacts', id))
+}
+
 export async function getContactsByStudent(studentId: string) {
   const response = await getDocs(
     query(collection(db, 'contacts'), where('studentsIds', 'array-contains', studentId)), //VER ESTOOOOOO
@@ -85,4 +89,27 @@ export async function deleteContacts(ids: string[]) {
 
 export async function editContact(contactEdited: ContactForm, contactId: string) {
   await setDoc(doc(db, 'contacts', contactId), contactEdited)
+}
+
+export async function addStudentToContact(contactId: string, studentId: string) {
+  await getContact(contactId).then((r) => {
+    const data = r.data() as Contact
+    const ids = [...data.studentsIds, studentId]
+    console.log(data, ids)
+    updateDoc(doc(db, 'contacts', contactId), { studentsIds: ids })
+  })
+}
+
+export async function getStudentsByContactId(contactId: string, setStudents: Dispatch<SetStateAction<Student[]>>) {
+  getContact(contactId).then((r) => {
+    const contacts = r.data() as Contact
+
+    const studentPromises = contacts.studentsIds.map((studentId) => getStudent(studentId))
+
+    Promise.all(studentPromises).then((responses) => {
+      const studentsData = responses.map((r) => r.data() as Student)
+      console.log(studentsData)
+      setStudents(studentsData)
+    })
+  })
 }

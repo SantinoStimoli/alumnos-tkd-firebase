@@ -25,7 +25,8 @@ const headCells: HeadCell[] = [
 const Contacts = () => {
   const [rows, setRows] = useState<Contact[]>([])
   const [form, setForm] = useState<Contact | boolean>(false)
-  const [contactConextionsIds, setContactConextionsIds] = useState<string[] | null>(null)
+  const [contactConecctionsIds, setContactConecctionsIds] = useState<string[] | null>(null)
+  const [contactId, setContactId] = useState<string>('')
 
   useEffect(() => {
     getContacts(setRows)
@@ -43,12 +44,12 @@ const Contacts = () => {
         </div>
       </Modal>
       <Modal
-        open={contactConextionsIds !== null}
-        onClose={() => setContactConextionsIds(null)}
+        open={contactConecctionsIds !== null}
+        onClose={() => setContactConecctionsIds(null)}
         className='flex justify-center items-center'
       >
         <div>
-          <StudentsList ids={contactConextionsIds ?? []} />
+          <StudentsList contactId={contactId} />
         </div>
       </Modal>
 
@@ -62,7 +63,14 @@ const Contacts = () => {
         headCells={headCells}
         options={[
           { label: 'Editar Contacto', icon: <EditNote />, action: (row: Contact) => setForm(row) },
-          { label: 'Conexiones', icon: <Person />, action: (row: Contact) => setContactConextionsIds(row.studentsIds) },
+          {
+            label: 'Conexiones',
+            icon: <Person />,
+            action: (row: Contact) => {
+              setContactId(row.id)
+              setContactConecctionsIds(row.studentsIds)
+            },
+          },
         ]}
       />
     </main>
