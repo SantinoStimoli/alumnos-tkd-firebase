@@ -2,7 +2,7 @@ import { Add, FamilyRestroom } from '@mui/icons-material'
 import { Button, FormControl, InputLabel, List, MenuItem, Modal, Paper, Select, SelectChangeEvent } from '@mui/material'
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { Student } from '../../interfaces/interfaces'
-import { addStudentToContact, getStudents, getStudentsByContactId } from '../../services/http'
+import { addStudentToContact, getStudents, getStudentsByContactId } from '../../services/services'
 import ContactListElement from '../pure/ContactListElement'
 import { LoadingContext } from '../../routes/AppRouting'
 

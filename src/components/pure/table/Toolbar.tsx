@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { LoadingContext } from '../../../routes/AppRouting'
 import { Add, Delete, Upgrade } from '@mui/icons-material'
 import { IconButton, Toolbar, Tooltip, Typography, alpha } from '@mui/material'
-import { upgradeGraduations } from '../../../services/services'
+import { upgradeGraduations } from '../../../utils/utils'
 
 const PersonalToolbar = ({
   label,

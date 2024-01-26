@@ -1,7 +1,7 @@
 import { Delete } from '@mui/icons-material'
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
 import React, { ReactElement, useContext, useState } from 'react'
-import { removeContactFromStudent } from '../../services/http'
+import { removeContactFromStudent } from '../../services/services'
 import { LoadingContext } from '../../routes/AppRouting'
 
 const ContactListElement = ({

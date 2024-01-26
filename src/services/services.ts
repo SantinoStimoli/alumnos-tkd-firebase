@@ -1,74 +1,124 @@
-import { ContactForm, StudentForm } from '../interfaces/interfaces'
-import { getStudent, upgradeGraduation } from './http'
+import { Dispatch, SetStateAction } from 'react'
+import { Contact, ContactForm, Student, StudentForm } from '../interfaces/interfaces'
+import { db } from './credentials'
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore'
 
-export function formatDate(date: string, read?: boolean) {
-  if (date === '' || date === undefined) return '-'
-  if (read === true) {
-    const [day, month, year] = date.split('/')
-    return `${year}-${month}-${day}`
-  } else {
-    const [year, month, day] = date.split('-')
-    return `${day}/${month}/${year}`
-  }
+// STUDENTS
+
+export async function getStudents() {
+  const response = await getDocs(collection(db, 'students'))
+  const data: Object[] = []
+  response.forEach((d) => data.push({ ...d.data(), id: d.id }))
+
+  return data as Student[]
 }
 
-export function formatName(name: string): string {
-  return name
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ')
+export async function getStudent(id: string) {
+  return await getDoc(doc(db, 'students', id))
 }
 
-export function formatUrl(text: string): string {
-  return text.toLowerCase().replace(/\s+/g, '-')
+export async function addStudent(student: StudentForm) {
+  await addDoc(collection(db, 'students'), student)
 }
 
-export function formatStudent(studentToFormat: any): StudentForm {
-  return {
-    name: formatName(studentToFormat[0].value),
-    lastName: formatName(studentToFormat[1].value),
-    graduation: studentToFormat[2].value,
-    phone: studentToFormat[4].value === '' ? '-' : studentToFormat[4].value,
-    birthDate: formatDate(studentToFormat[5].value),
-    startDate: formatDate(studentToFormat[6].value),
-    annotations: studentToFormat[7].value,
-  }
+export async function deleteStudents(ids: string[]) {
+  const deleteStudents = ids.map(async (id) => {
+    await deleteDoc(doc(db, 'students', id))
+  })
+
+  await Promise.all(deleteStudents)
 }
 
-export function formatContact(contactToFormat: any, studentId?: string): ContactForm {
-  return {
-    name: formatName(contactToFormat[0].value),
-    lastName: formatName(contactToFormat[1].value),
-    phone: contactToFormat[2].value ?? '-',
-    studentsIds: studentId !== undefined ? [studentId] : [],
-  }
+export async function editStudent(studentEdited: StudentForm, studentId: string) {
+  await setDoc(doc(db, 'students', studentId), studentEdited)
 }
 
-export async function upgradeGraduations(ids: string[]) {
-  const logic: { [key: string]: string } = {
-    'Blanco': 'Punta amarilla',
-    'Punta amarilla': 'Amarillo',
-    'Amarillo': 'Punta verde',
-    'Punta verde': 'Verde',
-    'Verde': 'Punta azul',
-    'Punta azul': 'Azul',
-    'Azul': 'Punta roja',
-    'Punta roja': 'Rojo',
-    'Rojo': 'Punta negra',
-    'Punta negra': 'Negro (I)',
-    'Negro (I)': 'Negro (II)',
-    'Negro (II)': 'Negro (III)',
-    'Negro (III)': 'Negro (IV)',
-    'Negro (IV)': 'Negro (V)',
-    'Negro (V)': 'Negro (VI)',
-    'Negro (VI)': 'Negro (VII)',
-    'Negro (VII)': 'Negro (VIII)',
-    'Negro (VIII)': 'Negro (IX)',
-  }
+export async function upgradeGraduation(studentId: string, newGraduation: string) {
+  await updateDoc(doc(db, 'students', studentId), { graduation: newGraduation })
+}
 
-  await ids.forEach((id) => {
-    getStudent(id).then((r) => {
-      upgradeGraduation(r.id, logic[r.data()?.graduation] ?? 'Negro (IX)')
+// CONTACTS
+
+export async function getContacts() {
+  const response = await getDocs(collection(db, 'contacts'))
+  const data: Object[] = []
+  response.forEach((d) => data.push({ ...d.data(), id: d.id }))
+
+  return data as Contact[]
+}
+
+export async function getContact(id: string) {
+  return await getDoc(doc(db, 'contacts', id))
+}
+
+export async function getContactsByStudent(studentId: string) {
+  const response = await getDocs(
+    query(collection(db, 'contacts'), where('studentsIds', 'array-contains', studentId)), //VER ESTOOOOOO
+  )
+  const data: Object[] = []
+  response.forEach((d) => data.push({ ...d.data(), id: d.id }))
+
+  const contactsData: Contact[] = data as Contact[]
+
+  return contactsData
+}
+
+export async function addContact(contact: ContactForm) {
+  await addDoc(collection(db, 'contacts'), contact)
+}
+
+export async function deleteContacts(ids: string[]) {
+  const deleteContacts = ids.map(async (id) => {
+    await deleteDoc(doc(db, 'contacts', id))
+  })
+
+  await Promise.all(deleteContacts)
+}
+
+export async function editContact(contactEdited: ContactForm, contactId: string) {
+  await setDoc(doc(db, 'contacts', contactId), contactEdited)
+}
+
+export async function addStudentToContact(contactId: string, studentId: string) {
+  await getContact(contactId).then((r) => {
+    const data = r.data() as Contact
+    const ids = data.studentsIds
+    if (!ids.includes(studentId)) {
+      updateDoc(doc(db, 'contacts', contactId), { studentsIds: [...ids, studentId] })
+    }
+  })
+}
+
+export async function getStudentsByContactId(contactId: string, setStudents: Dispatch<SetStateAction<Student[]>>) {
+  getContact(contactId).then((r) => {
+    const contacts = r.data() as Contact
+
+    const studentPromises = contacts.studentsIds.map((studentId) => getStudent(studentId))
+
+    Promise.all(studentPromises).then((responses) => {
+      const studentsData = responses.map((r) => r.data() as Student)
+      setStudents(studentsData)
     })
+  })
+}
+
+export async function removeContactFromStudent(contactId: string, studentId: string) {
+  getContact(contactId).then((r) => {
+    const { studentsIds } = r.data() as Contact
+    let indexToDelete = studentsIds.indexOf(studentId)
+    studentsIds.splice(indexToDelete, 1)
+
+    updateDoc(doc(db, 'contacts', contactId), { studentsIds })
   })
 }

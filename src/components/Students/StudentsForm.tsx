@@ -1,9 +1,9 @@
 import React, { FormEvent, useContext, useState } from 'react'
 import { Button, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, TextField } from '@mui/material'
 import { Graduations } from '../../data/data.ts'
-import { addStudent, editStudent } from '../../services/http.ts'
+import { addStudent, editStudent } from '../../services/services.ts'
 import { LoadingContext } from '../../routes/AppRouting.tsx'
-import { formatDate, formatStudent } from '../../services/services.ts'
+import { formatDate, formatStudent } from '../../utils/utils.ts'
 
 const StudentsForm = ({
   studentToEdit,
@@ -26,16 +26,15 @@ const StudentsForm = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading && setLoading(true)
-    const target = { ...e.target, graduation }
     if (isViewMode) {
-      editStudent(formatStudent(target), studentToEdit.id).then(() =>
+      editStudent(formatStudent({ ...e.target, graduation }), studentToEdit.id).then(() =>
         updateStudents().finally(() => {
           setLoading && setLoading(false)
           setEdit(true)
         }),
       )
     } else {
-      addStudent(formatStudent(target)).then(() =>
+      addStudent(formatStudent({ ...e.target, graduation })).then(() =>
         updateStudents().finally(() => {
           setLoading && setLoading(false)
           setEdit(true)

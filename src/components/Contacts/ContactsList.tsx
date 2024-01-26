@@ -2,7 +2,7 @@ import { Add, FamilyRestroom } from '@mui/icons-material'
 import { List, Modal, Paper } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Contact } from '../../interfaces/interfaces'
-import { getContactsByStudent } from '../../services/http'
+import { getContactsByStudent } from '../../services/services'
 import ContactsForm from './ContactsForm'
 import ContactListElement from '../pure/ContactListElement'
 

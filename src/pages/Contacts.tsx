@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal } from '@mui/material'
 import PersonalTable from '../components/pure/table/Table'
-import { deleteContacts, getContacts } from '../services/http'
+import { deleteContacts, getContacts } from '../services/services'
 import ContactsForm from '../components/Contacts/ContactsForm'
 import { Contact, HeadCell } from '../interfaces/interfaces'
 import { EditNote, Person } from '@mui/icons-material'
 import StudentsList from '../components/Students/StudentsList'
+import { LoadingContext } from '../routes/AppRouting'
 
 const headCells: HeadCell[] = [
   {
@@ -25,11 +26,20 @@ const headCells: HeadCell[] = [
 const Contacts = () => {
   const [rows, setRows] = useState<Contact[]>([])
   const [form, setForm] = useState<Contact | boolean>(false)
-  const [contactConecctionsIds, setContactConecctionsIds] = useState<string[] | null>(null)
+  const [connectionsIds, setConnections] = useState<string[] | null>(null)
   const [contactId, setContactId] = useState<string>('')
 
+  const setLoading = useContext(LoadingContext)
+
+  const updateContacts = async () => {
+    setLoading && setLoading(true)
+    await getContacts()
+      .then((r) => setRows(r))
+      .finally(() => setLoading && setLoading(false))
+  }
+
   useEffect(() => {
-    getContacts(setRows)
+    updateContacts()
   }, [])
 
   return (
@@ -37,13 +47,10 @@ const Contacts = () => {
       {/* M O D A L E S */}
       <Modal open={form !== false} onClose={() => setForm(false)} className='modal'>
         <div>
-          <ContactsForm
-            updateContacts={() => getContacts(setRows)}
-            contactToEdit={typeof form !== 'boolean' ? form : undefined}
-          />
+          <ContactsForm updateContacts={updateContacts} contactToEdit={typeof form !== 'boolean' ? form : undefined} />
         </div>
       </Modal>
-      <Modal open={contactConecctionsIds !== null} onClose={() => setContactConecctionsIds(null)} className='modal'>
+      <Modal open={connectionsIds !== null} onClose={() => setConnections(null)} className='modal'>
         <div>
           <StudentsList contactId={contactId} />
         </div>
@@ -54,7 +61,7 @@ const Contacts = () => {
         label='Contacto'
         setForm={setForm}
         rows={rows}
-        getElements={() => getContacts(setRows)}
+        getElements={updateContacts}
         deleteElements={deleteContacts}
         headCells={headCells}
         options={[
@@ -64,7 +71,7 @@ const Contacts = () => {
             icon: <Person />,
             action: (row: Contact) => {
               setContactId(row.id)
-              setContactConecctionsIds(row.studentsIds)
+              setConnections(row.studentsIds)
             },
           },
         ]}
