@@ -72,7 +72,7 @@ const AppRouting = () => {
               <Route path='/alumnos-tkd/cuotas' element={<h1>CUOTAS</h1>} />
               {/* <Route path='*' element={<Navigate to={'/alumnos-tkd/inicio'} />} /> */}
 
-              <Route path='*' element={<Navigate to={'/alumnos-tkd/contactos'} />} />
+              <Route path='*' element={<Navigate to={'/alumnos-tkd/alumnos'} />} />
             </Routes>
           ) : (
             <Routes>

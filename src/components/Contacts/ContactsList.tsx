@@ -1,25 +1,24 @@
-import { Add, FamilyRestroom } from '@mui/icons-material'
 import { List, Modal, Paper } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import { Contact } from '../../interfaces/interfaces'
-import { getContactsByStudent, removeContactFromStudent } from '../../services/services'
+import { getContactsByStudent, removeStudentFromContactWithId } from '../../services/services'
 import ContactsForm from './ContactsForm'
 import ContactListElement from '../pure/ContactListElement'
 import { LoadingContext } from '../../routes/AppRouting'
 
-const ContactsList = ({ id }: { id: string }) => {
+const ContactsList = ({ studentId }: { studentId: string }) => {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [contactForm, setContactForm] = useState(false)
 
   const getContactsOfTheStudent = async () => {
-    await getContactsByStudent(id).then((r) => setContacts(r))
+    await getContactsByStudent(studentId).then((r) => setContacts(r))
   }
 
   const setLoading = useContext(LoadingContext)
 
   const removeContact = (contactId: string) => {
     setLoading && setLoading(true)
-    removeContactFromStudent(contactId, id).finally(() => {
+    removeStudentFromContactWithId({ contactId: contactId, studentId: studentId }).finally(() => {
       getContactsOfTheStudent().then(() => {
         setLoading && setLoading(false)
       })
@@ -34,7 +33,7 @@ const ContactsList = ({ id }: { id: string }) => {
     <Paper className='modal-content'>
       <Modal open={contactForm} onClose={() => setContactForm(false)} className='modal'>
         <div>
-          <ContactsForm studentId={id} updateContacts={getContactsOfTheStudent} />
+          <ContactsForm addToStudentsForm studentId={studentId} updateContacts={getContactsOfTheStudent} />
         </div>
       </Modal>
 

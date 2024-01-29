@@ -58,7 +58,7 @@ const Students = () => {
       </Modal>
       <Modal open={studentId !== ''} onClose={() => setStudentId('')} className='modal'>
         <div>
-          <ContactsList id={studentId} />
+          <ContactsList studentId={studentId} />
         </div>
       </Modal>
 

@@ -116,16 +116,18 @@ export async function getStudentsByContactId(contactId: string, setStudents: Dis
   })
 }
 
-export async function removeContactFromStudent(contactId: string, studentId: string) {
-  getContact(contactId).then((r) => {
+export async function removeStudentFromContactWithId({
+  contactId,
+  studentId,
+}: {
+  contactId: string
+  studentId: string
+}) {
+  await getContact(contactId).then(async (r) => {
     const { studentsIds } = r.data() as Contact
     let indexToDelete = studentsIds.indexOf(studentId)
     studentsIds.splice(indexToDelete, 1)
 
-    updateDoc(doc(db, 'contacts', contactId), { studentsIds })
+    await updateDoc(doc(db, 'contacts', contactId), { studentsIds })
   })
-}
-
-export async function removeStudentFromContact(studentId: string, contactId: string) {
-  console.log(`IDCONTACTO: ${contactId} IDSTUDENT: ${studentId}`)
 }

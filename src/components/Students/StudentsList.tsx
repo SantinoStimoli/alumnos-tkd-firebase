@@ -5,7 +5,7 @@ import {
   addStudentToContact,
   getStudents,
   getStudentsByContactId,
-  removeStudentFromContact,
+  removeStudentFromContactWithId,
 } from '../../services/services'
 import ContactListElement from '../pure/ContactListElement'
 import { LoadingContext } from '../../routes/AppRouting'
@@ -15,13 +15,13 @@ const StudentsList = ({ contactId }: { contactId: string }) => {
   const [studentAddForm, setStudentAddForm] = useState(false)
   const [studentId, setStudentId] = useState('')
 
-  const [studentsForm, setStudentsForm] = useState<Student[]>([])
+  const [studentsSelect, setStudentsSelect] = useState<Student[]>([])
 
   const setLoading = useContext(LoadingContext)
 
   const getStudentContact = async () => {
     setLoading && setLoading(true)
-    getStudentsByContactId(contactId, setConnectedStudents).finally(() => {
+    await getStudentsByContactId(contactId, setConnectedStudents).finally(() => {
       setLoading && setLoading(false)
     })
   }
@@ -41,16 +41,14 @@ const StudentsList = ({ contactId }: { contactId: string }) => {
 
   const removeStudent = (studentId: string) => {
     setLoading && setLoading(true)
-    removeStudentFromContact(studentId, contactId).finally(() => {
-      getStudentContact().then(() => {
-        setLoading && setLoading(false)
-      })
+    removeStudentFromContactWithId({ contactId: contactId, studentId: studentId }).then(() => {
+      getStudentContact()
     })
   }
 
   useEffect(() => {
     getStudentContact()
-    getStudents().then((r) => setStudentsForm(r))
+    getStudents().then((r) => setStudentsSelect(r))
   }, [])
 
   return (
@@ -58,12 +56,12 @@ const StudentsList = ({ contactId }: { contactId: string }) => {
       {/* M O D A L E S */}
       <Modal open={studentAddForm} onClose={() => setStudentAddForm(false)} className='modal'>
         <Paper className='modal-content'>
+          <h1>Añadir alumno como conexión</h1>
           <form onSubmit={handleSubmit}>
-            <h1>Añadir alumno como conexión</h1>
             <FormControl fullWidth>
               <InputLabel id='students'>Alumno</InputLabel>
               <Select labelId='students' label='Alumnos' value={studentId} onChange={handleChange} required>
-                {studentsForm.map((student, i) => {
+                {studentsSelect.map((student, i) => {
                   return (
                     <MenuItem key={i} value={student.id}>
                       {student.name} {student.lastName} ({student.graduation})

@@ -12,7 +12,7 @@ const ContactListElement = ({
   label: string
   phone?: number | string
   action?: () => void
-  id: string
+  id?: string
   removeElement?: (id: string) => void
 }) => {
   const [hover, setHover] = useState(false)
@@ -26,7 +26,7 @@ const ContactListElement = ({
         {action === undefined ? (
           hover ? (
             <Avatar
-              onClick={() => removeElement !== undefined && removeElement(id)}
+              onClick={() => removeElement !== undefined && removeElement(id ?? '')}
               className='cursor-pointer !bg-red-600'
             >
               <Delete />
