@@ -1,8 +1,12 @@
-import { Add, FamilyRestroom } from '@mui/icons-material'
 import { Button, FormControl, InputLabel, List, MenuItem, Modal, Paper, Select, SelectChangeEvent } from '@mui/material'
 import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { Student } from '../../interfaces/interfaces'
-import { addStudentToContact, getStudents, getStudentsByContactId } from '../../services/services'
+import {
+  addStudentToContact,
+  getStudents,
+  getStudentsByContactId,
+  removeStudentFromContact,
+} from '../../services/services'
 import ContactListElement from '../pure/ContactListElement'
 import { LoadingContext } from '../../routes/AppRouting'
 
@@ -32,6 +36,15 @@ const StudentsList = ({ contactId }: { contactId: string }) => {
     setLoading && setLoading(true)
     addStudentToContact(contactId, studentId).finally(() => {
       getStudentContact().finally(() => setLoading && setLoading(false))
+    })
+  }
+
+  const removeStudent = (studentId: string) => {
+    setLoading && setLoading(true)
+    removeStudentFromContact(studentId, contactId).finally(() => {
+      getStudentContact().then(() => {
+        setLoading && setLoading(false)
+      })
     })
   }
 
@@ -77,13 +90,12 @@ const StudentsList = ({ contactId }: { contactId: string }) => {
               label={`${e.name} ${e.lastName}`}
               phone={e.phone}
               id={e.id}
-              icon={<FamilyRestroom />}
-              updateContacts={getStudentContact}
+              removeElement={removeStudent}
             />
           )
         })}
 
-        <ContactListElement action={() => setStudentAddForm(true)} label='Añadir conexión' icon={<Add />} />
+        <ContactListElement id='ADD' action={() => setStudentAddForm(true)} label='Añadir conexión' />
       </List>
     </Paper>
   )

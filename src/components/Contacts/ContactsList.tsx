@@ -1,10 +1,11 @@
 import { Add, FamilyRestroom } from '@mui/icons-material'
 import { List, Modal, Paper } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Contact } from '../../interfaces/interfaces'
-import { getContactsByStudent } from '../../services/services'
+import { getContactsByStudent, removeContactFromStudent } from '../../services/services'
 import ContactsForm from './ContactsForm'
 import ContactListElement from '../pure/ContactListElement'
+import { LoadingContext } from '../../routes/AppRouting'
 
 const ContactsList = ({ id }: { id: string }) => {
   const [contacts, setContacts] = useState<Contact[]>([])
@@ -12,6 +13,17 @@ const ContactsList = ({ id }: { id: string }) => {
 
   const getContactsOfTheStudent = async () => {
     await getContactsByStudent(id).then((r) => setContacts(r))
+  }
+
+  const setLoading = useContext(LoadingContext)
+
+  const removeContact = (contactId: string) => {
+    setLoading && setLoading(true)
+    removeContactFromStudent(contactId, id).finally(() => {
+      getContactsOfTheStudent().then(() => {
+        setLoading && setLoading(false)
+      })
+    })
   }
 
   useEffect(() => {
@@ -31,17 +43,15 @@ const ContactsList = ({ id }: { id: string }) => {
           return (
             <ContactListElement
               key={i}
-              studentId={id}
               label={`${e.name} ${e.lastName}`}
               phone={e.phone}
               id={e.id}
-              icon={<FamilyRestroom />}
-              updateContacts={getContactsOfTheStudent}
+              removeElement={removeContact}
             />
           )
         })}
 
-        <ContactListElement action={() => setContactForm(true)} label='Añadir contacto' icon={<Add />} />
+        <ContactListElement action={() => setContactForm(true)} label='Añadir contacto' />
       </List>
     </Paper>
   )

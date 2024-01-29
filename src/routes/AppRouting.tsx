@@ -40,7 +40,7 @@ const AppRouting = () => {
     <LoadingContext.Provider value={setIsLoading}>
       <main className={'' + (isAuth && 'grid-main')}>
         {/* M O D A L E S */}
-        <Backdrop open={!isLoading}>
+        <Backdrop open={isLoading}>
           <CircularProgress color='inherit' />
         </Backdrop>
 

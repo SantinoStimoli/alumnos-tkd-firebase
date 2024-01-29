@@ -48,6 +48,16 @@ export async function upgradeGraduation(studentId: string, newGraduation: string
   await updateDoc(doc(db, 'students', studentId), { graduation: newGraduation })
 }
 
+export async function addStudentToContact(contactId: string, studentId: string) {
+  await getContact(contactId).then((r) => {
+    const data = r.data() as Contact
+    const ids = data.studentsIds
+    if (!ids.includes(studentId)) {
+      updateDoc(doc(db, 'contacts', contactId), { studentsIds: [...ids, studentId] })
+    }
+  })
+}
+
 // CONTACTS
 
 export async function getContacts() {
@@ -90,24 +100,17 @@ export async function editContact(contactEdited: ContactForm, contactId: string)
   await setDoc(doc(db, 'contacts', contactId), contactEdited)
 }
 
-export async function addStudentToContact(contactId: string, studentId: string) {
-  await getContact(contactId).then((r) => {
-    const data = r.data() as Contact
-    const ids = data.studentsIds
-    if (!ids.includes(studentId)) {
-      updateDoc(doc(db, 'contacts', contactId), { studentsIds: [...ids, studentId] })
-    }
-  })
-}
-
 export async function getStudentsByContactId(contactId: string, setStudents: Dispatch<SetStateAction<Student[]>>) {
   getContact(contactId).then((r) => {
     const contacts = r.data() as Contact
 
-    const studentPromises = contacts.studentsIds.map((studentId) => getStudent(studentId))
+    const studentPromises = contacts.studentsIds.map(async (studentId) => {
+      const student = (await getStudent(studentId)).data()
+      return { id: studentId, ...student }
+    })
 
     Promise.all(studentPromises).then((responses) => {
-      const studentsData = responses.map((r) => r.data() as Student)
+      const studentsData = responses.map((r) => r as Student)
       setStudents(studentsData)
     })
   })
@@ -121,4 +124,8 @@ export async function removeContactFromStudent(contactId: string, studentId: str
 
     updateDoc(doc(db, 'contacts', contactId), { studentsIds })
   })
+}
+
+export async function removeStudentFromContact(studentId: string, contactId: string) {
+  console.log(`IDCONTACTO: ${contactId} IDSTUDENT: ${studentId}`)
 }

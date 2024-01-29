@@ -1,39 +1,21 @@
-import { Delete } from '@mui/icons-material'
+import { Add, Delete, FamilyRestroom } from '@mui/icons-material'
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
-import React, { ReactElement, useContext, useState } from 'react'
-import { removeContactFromStudent } from '../../services/services'
-import { LoadingContext } from '../../routes/AppRouting'
+import React, { useState } from 'react'
 
 const ContactListElement = ({
-  studentId,
   label,
   phone,
   action,
-  icon,
   id,
-  updateContacts,
+  removeElement,
 }: {
-  studentId?: string
   label: string
   phone?: number | string
   action?: () => void
-  icon: ReactElement
-  id?: string
-  updateContacts?: () => Promise<void>
+  id: string
+  removeElement?: (id: string) => void
 }) => {
   const [hover, setHover] = useState(false)
-
-  const setLoading = useContext(LoadingContext)
-
-  const removeContact = (contactId: string) => {
-    setLoading && setLoading(true)
-    removeContactFromStudent(contactId, studentId ?? '').finally(() => {
-      updateContacts !== undefined &&
-        updateContacts().then(() => {
-          setLoading && setLoading(false)
-        })
-    })
-  }
 
   return (
     <ListItem
@@ -41,12 +23,23 @@ const ContactListElement = ({
       onClick={action}
     >
       <ListItemAvatar onMouseOver={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-        {id !== undefined && hover ? (
-          <Avatar onClick={() => removeContact(id)} className='cursor-pointer !bg-red-600'>
-            <Delete />
-          </Avatar>
+        {action === undefined ? (
+          hover ? (
+            <Avatar
+              onClick={() => removeElement !== undefined && removeElement(id)}
+              className='cursor-pointer !bg-red-600'
+            >
+              <Delete />
+            </Avatar>
+          ) : (
+            <Avatar>
+              <FamilyRestroom />
+            </Avatar>
+          )
         ) : (
-          <Avatar>{icon}</Avatar>
+          <Avatar>
+            <Add />
+          </Avatar>
         )}
       </ListItemAvatar>
       <a href={action === undefined ? `whatsapp://send?phone=${phone}` : '#'} className='[&_p]:hover:underline'>
